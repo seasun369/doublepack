@@ -1,0 +1,3 @@
+/mnt/extra_space/ztx/turbopack/secure-computation-library/build/Release/CMakeFiles/rebuild_cache.dir
+/mnt/extra_space/ztx/turbopack/secure-computation-library/build/Release/CMakeFiles/edit_cache.dir
+/mnt/extra_space/ztx/turbopack/secure-computation-library/build/Release/CMakeFiles/scl.dir

@@ -1,0 +1,5 @@
+/mnt/extra_space/ztx/doublepack/build/CMakeFiles/rebuild_cache.dir
+/mnt/extra_space/ztx/doublepack/build/CMakeFiles/rmfe.dir
+/mnt/extra_space/ztx/doublepack/build/CMakeFiles/grmult.dir
+/mnt/extra_space/ztx/doublepack/build/CMakeFiles/edit_cache.dir
+/mnt/extra_space/ztx/doublepack/build/CMakeFiles/pss.dir
