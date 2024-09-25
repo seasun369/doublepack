@@ -1,12 +1,11 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.14)
 
 # 设置项目名称和使用的 C++ 标准
-project(Doublepack_Project LANGUAGES CXX)
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+project(Doublepack_Project DESCRIPTION "Double-Packing")
 
 # 设置编译器选项
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O2 -pthread -march=native")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native -pthread -std=gnu++17")
 
 # 添加 NTL, GMP 和数学库的链接
 find_library(NTL_LIBRARY ntl REQUIRED)
@@ -14,7 +13,7 @@ find_library(GMP_LIBRARY gmp REQUIRED)
 find_library(M_LIBRARY m REQUIRED)
 
 # 定义各个源文件
-set(SOURCES
+set(DP_SOURCE_FILES
     PSS/pss.cpp
     GR/gr.cpp
     RMFE/RMFE.cpp
@@ -22,14 +21,46 @@ set(SOURCES
     RMFE/NM_RMFE.cpp
     RMFE/utils.cpp
     RMFE/Inverse.cpp
+
+    #src/dp/gate.cc
+    #src/dp/mult_gate.cc
+    #src/dp/input_gate.cc
+    #src/dp/output_gate.cc
+  
+    #src/dp/circuits/building.cc
+    #src/dp/circuits/cleartext.cc
+    #src/dp/circuits/generic.cc
+    #src/dp/circuits/online.cc
+    #src/dp/circuits/offline.cc  
+  
+    #src/dp/correlator.cc  
+    #src/dp/fi_prep.cc  
 )
 
-# 添加测试文件
-add_executable(pss test/pss_test.cpp ${SOURCES})
-add_executable(grmult test/GRmult_test.cpp ${SOURCES})
-add_executable(rmfe test/RMFE_test.cpp ${SOURCES})
+set(TEST_SOURCE_FILES
+    test/main.cc
+    test/pss_test.cc
+    test/GRmult_test.cc
+    test/RMFE_test.cc
+)
 
-# 链接外部库
-target_link_libraries(pss ${NTL_LIBRARY} ${GMP_LIBRARY} ${M_LIBRARY})
-target_link_libraries(grmult ${NTL_LIBRARY} ${GMP_LIBRARY} ${M_LIBRARY})
-target_link_libraries(rmfe ${NTL_LIBRARY} ${GMP_LIBRARY} ${M_LIBRARY})
+add_subdirectory( secure-computation-library )
+
+set( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -O0" )
+
+set(TEST_EXECUTABLE "tests.x")
+find_package( Catch2 REQUIRED )
+include( CTest )
+include( Catch )
+
+## Executable for tests
+add_executable( ${TEST_EXECUTABLE} ${DP_SOURCE_FILES} ${TEST_SOURCE_FILES} )
+target_include_directories(${TEST_EXECUTABLE} PUBLIC
+    "${CMAKE_SOURCE_DIR}/secure-computation-library/include"
+    "${CMAKE_SOURCE_DIR}/RMFE"
+    "${CMAKE_SOURCE_DIR}/GR"
+    "${CMAKE_SOURCE_DIR}/PSS"
+    "${CMAKE_SOURCE_DIR}/src")
+set( libscl "${CMAKE_SOURCE_DIR}/secure-computation-library/build/libscl.so.0.3" )
+target_link_libraries( ${TEST_EXECUTABLE} Catch2::Catch2 pthread scl ${NTL_LIBRARY} ${GMP_LIBRARY} ${M_LIBRARY} )
+

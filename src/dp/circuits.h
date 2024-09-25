@@ -291,9 +291,10 @@ namespace dp {
       mCorrelator.PrecomputeVandermonde();
     }
 
+//TODO: scheme1:d=n-m scheme2:d=n-1
     void init_scheme(){
       int corrupt_parties = (mClients - 1) / 2;
-      Scheme = packed_shamir::scheme(mClients,mBatch_m,mClients-mBatch_m,corrupt_parties,gring);
+      Scheme = packed_shamir::scheme(mClients,mBatch_m,mClients-mBatch_m,corrupt_parties,gring); 
     }
 
 

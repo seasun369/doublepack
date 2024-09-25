@@ -205,7 +205,7 @@ namespace dp {
 	      Shr entry(1);
 	      for (std::size_t j = 0; j < mThreshold + 1; ++j) {
 	        mVandermonde[i].emplace_back(entry);
-	        entry *= Shr(i);
+	        entry *= gring.set_T[i];
 	      }
       }
     }

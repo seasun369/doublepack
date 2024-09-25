@@ -27,6 +27,11 @@ namespace dp {
       //auto shares = scl::details::SharesFromEvPoly(poly, mParties);
 
       vec_ZZ_pE shares = Scheme.create_shares(secrets);
+      //vector<vector<long>> shares_long;
+      //for(int i=0; i<mParties; i++){
+      //  ZzpE2Veclong( shares[i], shares_long[i], gr_degree);
+      //}
+      
 
       // 2 send shares
       for ( std::size_t party = 0; party < mParties; party++ ){
@@ -40,20 +45,20 @@ namespace dp {
     std::size_t n_blocks = (mNIndShrs + (mThreshold + 1) -1) / (mThreshold + 1);
     for ( std::size_t block = 0; block < n_blocks; block++ ) {
       // 1 receive shares
-      std::vector<FF> recv_shares;
+      std::vector<Shr> recv_shares;
       recv_shares.reserve(mParties);
       for (std::size_t parties = 0; parties < mParties; parties++) {
-	FF buffer;
+	      Shr buffer;
         mNetwork->Party(parties)->Recv(buffer);
-	recv_shares.emplace_back(buffer);
+	      recv_shares.emplace_back(buffer);
       }
       // 2 multiply by Vandermonde
       for ( std::size_t shr_idx = 0; shr_idx < mThreshold+1; shr_idx++ ){
-	FF shr(0);
-	for ( std::size_t j = 0; j < mParties; j++ ){
-	  shr += mVandermonde[j][shr_idx] * recv_shares[j];
-	}
-	mIndShrs.emplace_back(shr);
+	       shr(0);
+	      for ( std::size_t j = 0; j < mParties; j++ ){
+	        shr += mVandermonde[j][shr_idx] * recv_shares[j];
+	      }
+	    mIndShrs.emplace_back(shr);
       }
     }
   }
@@ -306,7 +311,7 @@ namespace dp {
 
     for ( std::size_t i = 0; i < mNMultBatches; i++ ) {
       for ( std::size_t pack_idx = 0; pack_idx < mBatchSize; pack_idx++ ) {
-	mMultBatchFIPrep[i].mShrC += mSharesOfEi[pack_idx] * shares_prod[pack_idx][i];
+	mMultBatchFIPrep[i].mShrC += mSharesOfEij[pack_idx] * shares_prod[pack_idx][i];
       }
     }
   }

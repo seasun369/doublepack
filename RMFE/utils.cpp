@@ -618,3 +618,7 @@ vector<vector<long>> expressHighPowers(const vector<long>& coeffs, long d) {
 }
 */
 
+ZZ_pE ZZpmulZZpE(const ZZ_p& a, const ZZ_pE& b){
+    ZZ_pE _a = conv<ZZ_pE>(a);
+    return _a*b;
+}
