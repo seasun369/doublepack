@@ -1,0 +1,302 @@
+[
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include -I/mnt/extra_space/ztx/doublepack/RMFE -I/mnt/extra_space/ztx/doublepack/GR -I/mnt/extra_space/ztx/doublepack/PSS -I/mnt/extra_space/ztx/doublepack/src  -march=native -pthread -std=gnu++17 -O0 -g -o CMakeFiles/tests.x.dir/PSS/pss.cpp.o -c /mnt/extra_space/ztx/doublepack/PSS/pss.cpp",
+  "file": "/mnt/extra_space/ztx/doublepack/PSS/pss.cpp"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include -I/mnt/extra_space/ztx/doublepack/RMFE -I/mnt/extra_space/ztx/doublepack/GR -I/mnt/extra_space/ztx/doublepack/PSS -I/mnt/extra_space/ztx/doublepack/src  -march=native -pthread -std=gnu++17 -O0 -g -o CMakeFiles/tests.x.dir/GR/gr.cpp.o -c /mnt/extra_space/ztx/doublepack/GR/gr.cpp",
+  "file": "/mnt/extra_space/ztx/doublepack/GR/gr.cpp"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include -I/mnt/extra_space/ztx/doublepack/RMFE -I/mnt/extra_space/ztx/doublepack/GR -I/mnt/extra_space/ztx/doublepack/PSS -I/mnt/extra_space/ztx/doublepack/src  -march=native -pthread -std=gnu++17 -O0 -g -o CMakeFiles/tests.x.dir/RMFE/RMFE.cpp.o -c /mnt/extra_space/ztx/doublepack/RMFE/RMFE.cpp",
+  "file": "/mnt/extra_space/ztx/doublepack/RMFE/RMFE.cpp"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include -I/mnt/extra_space/ztx/doublepack/RMFE -I/mnt/extra_space/ztx/doublepack/GR -I/mnt/extra_space/ztx/doublepack/PSS -I/mnt/extra_space/ztx/doublepack/src  -march=native -pthread -std=gnu++17 -O0 -g -o CMakeFiles/tests.x.dir/RMFE/HenselLift.cpp.o -c /mnt/extra_space/ztx/doublepack/RMFE/HenselLift.cpp",
+  "file": "/mnt/extra_space/ztx/doublepack/RMFE/HenselLift.cpp"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include -I/mnt/extra_space/ztx/doublepack/RMFE -I/mnt/extra_space/ztx/doublepack/GR -I/mnt/extra_space/ztx/doublepack/PSS -I/mnt/extra_space/ztx/doublepack/src  -march=native -pthread -std=gnu++17 -O0 -g -o CMakeFiles/tests.x.dir/RMFE/NM_RMFE.cpp.o -c /mnt/extra_space/ztx/doublepack/RMFE/NM_RMFE.cpp",
+  "file": "/mnt/extra_space/ztx/doublepack/RMFE/NM_RMFE.cpp"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include -I/mnt/extra_space/ztx/doublepack/RMFE -I/mnt/extra_space/ztx/doublepack/GR -I/mnt/extra_space/ztx/doublepack/PSS -I/mnt/extra_space/ztx/doublepack/src  -march=native -pthread -std=gnu++17 -O0 -g -o CMakeFiles/tests.x.dir/RMFE/utils.cpp.o -c /mnt/extra_space/ztx/doublepack/RMFE/utils.cpp",
+  "file": "/mnt/extra_space/ztx/doublepack/RMFE/utils.cpp"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include -I/mnt/extra_space/ztx/doublepack/RMFE -I/mnt/extra_space/ztx/doublepack/GR -I/mnt/extra_space/ztx/doublepack/PSS -I/mnt/extra_space/ztx/doublepack/src  -march=native -pthread -std=gnu++17 -O0 -g -o CMakeFiles/tests.x.dir/RMFE/Inverse.cpp.o -c /mnt/extra_space/ztx/doublepack/RMFE/Inverse.cpp",
+  "file": "/mnt/extra_space/ztx/doublepack/RMFE/Inverse.cpp"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include -I/mnt/extra_space/ztx/doublepack/RMFE -I/mnt/extra_space/ztx/doublepack/GR -I/mnt/extra_space/ztx/doublepack/PSS -I/mnt/extra_space/ztx/doublepack/src  -march=native -pthread -std=gnu++17 -O0 -g -o CMakeFiles/tests.x.dir/test/main.cc.o -c /mnt/extra_space/ztx/doublepack/test/main.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/test/main.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include -I/mnt/extra_space/ztx/doublepack/RMFE -I/mnt/extra_space/ztx/doublepack/GR -I/mnt/extra_space/ztx/doublepack/PSS -I/mnt/extra_space/ztx/doublepack/src  -march=native -pthread -std=gnu++17 -O0 -g -o CMakeFiles/tests.x.dir/test/pss_test.cc.o -c /mnt/extra_space/ztx/doublepack/test/pss_test.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/test/pss_test.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include -I/mnt/extra_space/ztx/doublepack/RMFE -I/mnt/extra_space/ztx/doublepack/GR -I/mnt/extra_space/ztx/doublepack/PSS -I/mnt/extra_space/ztx/doublepack/src  -march=native -pthread -std=gnu++17 -O0 -g -o CMakeFiles/tests.x.dir/test/GRmult_test.cc.o -c /mnt/extra_space/ztx/doublepack/test/GRmult_test.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/test/GRmult_test.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include -I/mnt/extra_space/ztx/doublepack/RMFE -I/mnt/extra_space/ztx/doublepack/GR -I/mnt/extra_space/ztx/doublepack/PSS -I/mnt/extra_space/ztx/doublepack/src  -march=native -pthread -std=gnu++17 -O0 -g -o CMakeFiles/tests.x.dir/test/RMFE_test.cc.o -c /mnt/extra_space/ztx/doublepack/test/RMFE_test.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/test/RMFE_test.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/src/scl/prg.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/prg.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/prg.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/src/scl/hash.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/hash.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/hash.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/src/scl/math/str.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/math/str.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/math/str.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/src/scl/math/fields/mersenne61.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/math/fields/mersenne61.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/math/fields/mersenne61.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/src/scl/math/fields/mersenne127.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/math/fields/mersenne127.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/math/fields/mersenne127.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/src/scl/net/config.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/config.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/config.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/src/scl/net/mem_channel.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/mem_channel.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/mem_channel.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/src/scl/net/tcp_channel.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/tcp_channel.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/tcp_channel.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/src/scl/net/threaded_sender.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/threaded_sender.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/threaded_sender.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/src/scl/net/tcp_utils.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/tcp_utils.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/tcp_utils.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/src/scl/net/network.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/network.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/network.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/src/scl/net/discovery/server.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/discovery/server.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/discovery/server.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/src/scl/net/discovery/client.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/discovery/client.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/discovery/client.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/test/scl/main.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/main.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/main.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/test/scl/test_hash.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/test_hash.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/test_hash.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/test/scl/test_prg.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/test_prg.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/test_prg.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/test/scl/math/fields/test_mersenne61.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/math/fields/test_mersenne61.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/math/fields/test_mersenne61.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/test/scl/math/fields/test_mersenne127.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/math/fields/test_mersenne127.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/math/fields/test_mersenne127.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/test/scl/math/test_vec.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/math/test_vec.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/math/test_vec.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/test/scl/math/test_mat.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/math/test_mat.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/math/test_mat.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/test/scl/math/test_la.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/math/test_la.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/math/test_la.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/test/scl/math/test_ff.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/math/test_ff.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/math/test_ff.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/test/scl/math/test_z2k.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/math/test_z2k.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/math/test_z2k.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/test/scl/ss/test_additive.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/ss/test_additive.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/ss/test_additive.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/test/scl/ss/test_poly.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/ss/test_poly.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/ss/test_poly.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/test/scl/ss/test_evpoly.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/ss/test_evpoly.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/ss/test_evpoly.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/test/scl/ss/test_shamir.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/ss/test_shamir.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/ss/test_shamir.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/test/scl/ss/test_packed.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/ss/test_packed.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/ss/test_packed.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/test/scl/net/util.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/net/util.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/net/util.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/test/scl/net/test_config.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/net/test_config.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/net/test_config.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/test/scl/net/test_mem_channel.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/net/test_mem_channel.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/net/test_mem_channel.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/test/scl/net/test_tcp_channel.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/net/test_tcp_channel.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/net/test_tcp_channel.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/test/scl/net/test_threaded_sender.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/net/test_threaded_sender.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/net/test_threaded_sender.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/test/scl/net/test_network.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/net/test_network.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/net/test_network.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/test/scl/net/test_discover.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/net/test_discover.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/net/test_discover.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -o secure-computation-library/CMakeFiles/tests-scl.x.dir/test/scl/p/test_simple.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/p/test_simple.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/test/scl/p/test_simple.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -Dscl_EXPORTS -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -fPIC -o secure-computation-library/CMakeFiles/scl.dir/src/scl/prg.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/prg.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/prg.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -Dscl_EXPORTS -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -fPIC -o secure-computation-library/CMakeFiles/scl.dir/src/scl/hash.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/hash.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/hash.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -Dscl_EXPORTS -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -fPIC -o secure-computation-library/CMakeFiles/scl.dir/src/scl/math/str.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/math/str.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/math/str.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -Dscl_EXPORTS -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -fPIC -o secure-computation-library/CMakeFiles/scl.dir/src/scl/math/fields/mersenne61.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/math/fields/mersenne61.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/math/fields/mersenne61.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -Dscl_EXPORTS -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -fPIC -o secure-computation-library/CMakeFiles/scl.dir/src/scl/math/fields/mersenne127.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/math/fields/mersenne127.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/math/fields/mersenne127.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -Dscl_EXPORTS -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -fPIC -o secure-computation-library/CMakeFiles/scl.dir/src/scl/net/config.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/config.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/config.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -Dscl_EXPORTS -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -fPIC -o secure-computation-library/CMakeFiles/scl.dir/src/scl/net/mem_channel.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/mem_channel.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/mem_channel.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -Dscl_EXPORTS -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -fPIC -o secure-computation-library/CMakeFiles/scl.dir/src/scl/net/tcp_channel.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/tcp_channel.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/tcp_channel.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -Dscl_EXPORTS -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -fPIC -o secure-computation-library/CMakeFiles/scl.dir/src/scl/net/threaded_sender.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/threaded_sender.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/threaded_sender.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -Dscl_EXPORTS -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -fPIC -o secure-computation-library/CMakeFiles/scl.dir/src/scl/net/tcp_utils.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/tcp_utils.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/tcp_utils.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -Dscl_EXPORTS -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -fPIC -o secure-computation-library/CMakeFiles/scl.dir/src/scl/net/network.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/network.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/network.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -Dscl_EXPORTS -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -fPIC -o secure-computation-library/CMakeFiles/scl.dir/src/scl/net/discovery/server.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/discovery/server.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/discovery/server.cc"
+},
+{
+  "directory": "/mnt/extra_space/ztx/doublepack/build",
+  "command": "/usr/bin/g++-11 -DMAX_MAT_READ_SIZE=1024 -DMAX_VEC_READ_SIZE=1024 -DSCL_TEST_DATA_DIR=\\\"/mnt/extra_space/ztx/doublepack/test/data/\\\" -Dscl_EXPORTS -I/mnt/extra_space/ztx/doublepack/secure-computation-library/include  -march=native -pthread -std=gnu++17 -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17 -O0 -g -fPIC -o secure-computation-library/CMakeFiles/scl.dir/src/scl/net/discovery/client.cc.o -c /mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/discovery/client.cc",
+  "file": "/mnt/extra_space/ztx/doublepack/secure-computation-library/src/scl/net/discovery/client.cc"
+}
+]

@@ -208,6 +208,7 @@ namespace dp {
 	        entry *= gring.set_T[i];
 	      }
       }
+      mVandermonde_b = ZZpEmatrix2ZZpmatrix(mVandermonde, gr_degree, positive_integer);
     }
 
     // Maps
@@ -237,6 +238,7 @@ namespace dp {
 
     // Shares of e_i for current party
     std::vector<Shr> mSharesOfEij; // len = batchsize, eij = i+j*l
+    std::vector<std::vector<FF>> mVandermonde_b;  // mParties*r x (mThreshold + 1)*r
     std::vector<std::vector<Shr>> mVandermonde; // mParties x (mThreshold + 1)
  
 

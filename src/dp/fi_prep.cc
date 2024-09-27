@@ -13,12 +13,14 @@ namespace dp {
       //rmfe.set_input(v);
       //ZZ_pE zeros = long2ZZpE(rmfe.get_result());
 
-      Shr secret = random_ZZ_pE();
-      vec_ZZ_pE secrets;
+      for(std::size_t r = 0; r < gr_degree; r++){
+
+      FF secret = random_ZZ_p();
+      vec_ZZ_pE secrets;   //[s*1]_n-m
       secrets.SetLength(mBatch_m);  // 设置向量长度
 
-      for (long i = 0; i < mBatch_m; i++) {
-        secrets[i] = secret;
+      for (std::size_t i = 0; i < mBatch_m; i++) {
+        secrets[i] = conv<Shr>(secret);  
       }
     
       //Vec secrets(std::vector<FF>(mBatchSize, secret));
@@ -37,6 +39,7 @@ namespace dp {
       for ( std::size_t party = 0; party < mParties; party++ ){
         mNetwork->Party(party)->Send(shares[party]);
       }
+      }
     }
   }
 
@@ -46,17 +49,19 @@ namespace dp {
     for ( std::size_t block = 0; block < n_blocks; block++ ) {
       // 1 receive shares
       std::vector<Shr> recv_shares;
-      recv_shares.reserve(mParties);
+      recv_shares.reserve(mParties*gr_degree);
+      for(std::size_t r = 0; r < gr_degree; r++){
       for (std::size_t parties = 0; parties < mParties; parties++) {
 	      Shr buffer;
         mNetwork->Party(parties)->Recv(buffer);
 	      recv_shares.emplace_back(buffer);
       }
+      }
       // 2 multiply by Vandermonde
-      for ( std::size_t shr_idx = 0; shr_idx < mThreshold+1; shr_idx++ ){
-	       shr(0);
-	      for ( std::size_t j = 0; j < mParties; j++ ){
-	        shr += mVandermonde[j][shr_idx] * recv_shares[j];
+      for ( std::size_t shr_idx = 0; shr_idx < (mThreshold+1)*gr_degree; shr_idx++ ){
+	      Shr shr(0);
+	      for ( std::size_t j = 0; j < mParties*gr_degree; j++ ){
+	        shr += mVandermonde_b[j][shr_idx] * recv_shares[j];
 	      }
 	    mIndShrs.emplace_back(shr);
       }

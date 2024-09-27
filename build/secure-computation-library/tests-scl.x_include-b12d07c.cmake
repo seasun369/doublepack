@@ -1,0 +1,5 @@
+if(EXISTS "/mnt/extra_space/ztx/doublepack/build/secure-computation-library/tests-scl.x_tests-b12d07c.cmake")
+  include("/mnt/extra_space/ztx/doublepack/build/secure-computation-library/tests-scl.x_tests-b12d07c.cmake")
+else()
+  add_test(tests-scl.x_NOT_BUILT-b12d07c tests-scl.x_NOT_BUILT-b12d07c)
+endif()

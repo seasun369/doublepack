@@ -14,7 +14,7 @@ CostDataFile:
 Site: gdp
 
 # Build name is osname-revision-compiler, i.e. Linux-2.4.2-2smp-c++
-BuildName: Linux-c++
+BuildName: Linux-g++-11
 
 # Subprojects
 LabelsForSubprojects: 
@@ -62,7 +62,7 @@ UpdateOptions:
 UpdateType: git
 
 # Compiler info
-Compiler: /usr/bin/c++
+Compiler: /usr/bin/g++-11
 CompilerVersion: 11.4.0
 
 # Dynamic analysis (MemCheck)

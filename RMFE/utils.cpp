@@ -521,6 +521,26 @@ vector<long> multiplyMatrixByVector(const vector<vector<long>>& matrix, const ve
     return result;  // 返回结果列向量
 }
 
+vector<vector<long>> matrixMultiply(const vector<vector<long>>& A, const vector<vector<long>>& B) {
+    int m = A.size();              // A的行数
+    int n = A[0].size();           // A的列数，也是B的行数
+    int p = B[0].size();           // B的列数
+
+    // 结果矩阵初始化为 m x p 大小，元素全为0
+    vector<vector<long>> C(m, vector<long>(p, 0));
+
+    // 进行矩阵乘法
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < p; ++j) {
+            for (int k = 0; k < n; ++k) {
+                C[i][j] += A[i][k] * B[k][j];
+            }
+        }
+    }
+
+    return C;
+}
+
 /*
     取模2^k
 */
@@ -534,9 +554,9 @@ long fresh(long x, int k) {
 
 
 /*
-    (c_0,c_1,...c_{2d-2}) -> (c_0,c_1,...c_{d-1})
+    CAFE
 */
-vector<long> compression(const ZZ_pX& F, vector<long>& c){
+vector<vector<long>> compression(const ZZ_pX& F){
 
     vector<long> f;
     ZZpX2long(F, f);
@@ -544,7 +564,7 @@ vector<long> compression(const ZZ_pX& F, vector<long>& c){
     long dd = f.size();
     long d = dd - 1;
 
-    if(c.size() != 2*d-1) LogicError("compression: vector length mismatch");
+    //if(c.size() != 2*d-1) LogicError("compression: vector length mismatch");
 
     if(f.back() != 1) LogicError("compression: Irre error");
 
@@ -585,9 +605,7 @@ vector<long> compression(const ZZ_pX& F, vector<long>& c){
         }
     }
 
-    vector<long> c_new = multiplyMatrixByVector(transposed, c);
-
-    return c_new;
+    return transposed;
 }
 
 /*
@@ -621,4 +639,37 @@ vector<vector<long>> expressHighPowers(const vector<long>& coeffs, long d) {
 ZZ_pE ZZpmulZZpE(const ZZ_p& a, const ZZ_pE& b){
     ZZ_pE _a = conv<ZZ_pE>(a);
     return _a*b;
+}
+
+vector<vector<ZZ_p>> ZZpEmatrix2ZZpmatrix(vector<vector<ZZ_pE>>& V, long degree, long k){
+    long rows = V.size();
+    long cols = V[0].size();
+
+    ZZ p = conv<ZZ>(2);  //p 
+    ZZ pk = power(p, k);
+    ZZ_p::init(pk);
+
+    vector<vector<long>> result(rows*degree, vector<long>(cols*degree, 0));
+
+    for(long i=0; i<rows; i++){
+        for(long j=0; j<cols; j++){
+            vector<vector<long>> matrix_1; //2d-1 x d
+            generateMatrix(V[i][j], degree, matrix_1);
+            vector<vector<long>> matrix_2 = compression(ZZ_pE::modulus());
+            vector<vector<long>> matrix =  matrixMultiply(matrix_2, matrix_1); //d x d
+            for(long m=0; m<degree; m++){
+                for(long n=0; n<degree; n++){
+                    result[i*degree+m][j*degree+n] = fresh(matrix[m][n],k);
+                }
+            }
+        }
+    }
+
+    vector<vector<ZZ_p>> res;
+    for(long i=0; i<rows*degree; i++){
+        for(long j=0; j<cols*degree; j++){
+            res[i][j] = conv<ZZ_p>(result[i][j]);
+        }
+    }
+    return res;
 }

@@ -50,6 +50,8 @@ vector<vector<long>> splitVector(const vector<long>& input, int groupSize);
 void generateMatrix(const ZZ_pE& F, long d, vector<vector<long>>& matrix);
 vector<long> multiplyMatrixByVector(const vector<vector<long>>& matrix, const vector<long>& vec);
 long fresh(long x, int k);
-vector<long> compression(const ZZ_pX& F, vector<long>& c);
-ZZ_pE ZZpmulZZpE(const ZZ_p& a, const ZZ_pE& b)
+vector<vector<long>> compression(const ZZ_pX& F);
+ZZ_pE ZZpmulZZpE(const ZZ_p& a, const ZZ_pE& b);
+vector<vector<ZZ_p>> ZZpEmatrix2ZZpmatrix(vector<vector<ZZ_pE>>& V, long degree, long k);
+vector<vector<long>> matrixMultiply(const vector<vector<long>>& A, const vector<vector<long>>& B);
 #endif

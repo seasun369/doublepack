@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Site BuildName="Linux-c++"
+<Site BuildName="Linux-g++-11"
 	BuildStamp="20240925-0633-Experimental"
 	Name="gdp"
 	Generator="ctest-3.21.1"
-	CompilerName="/usr/bin/c++"
+	CompilerName="/usr/bin/g++-11"
 	CompilerVersion="11.4.0"
 	OSName="Linux"
 	Hostname="gdp"
@@ -21,14 +21,14 @@
 	TotalVirtualMemory="2047"
 	TotalPhysicalMemory="128551"
 	LogicalProcessorsPerPhysical="2"
-	ProcessorClockFrequency="3084.84"
+	ProcessorClockFrequency="1270"
 	>
 	<Testing>
-		<StartDateTime>Sep 25 14:48 CST</StartDateTime>
-		<StartTestTime>1727246881</StartTestTime>
+		<StartDateTime>Sep 25 20:40 CST</StartDateTime>
+		<StartTestTime>1727268038</StartTestTime>
 		<TestList/>
-		<EndDateTime>Sep 25 14:48 CST</EndDateTime>
-		<EndTestTime>1727246881</EndTestTime>
+		<EndDateTime>Sep 25 20:40 CST</EndDateTime>
+		<EndTestTime>1727268038</EndTestTime>
 		<ElapsedMinutes>0</ElapsedMinutes>
 	</Testing>
 </Site>
