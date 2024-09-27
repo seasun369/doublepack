@@ -62,6 +62,7 @@ namespace packed_shamir
 			vec_ZZ_pE create_shares(vec_ZZ_pE a);
 			vector<vec_ZZ_pE> packed_create_shares(vec_ZZ_pE secret);
 			vec_ZZ_pE packed_reconstruct_shares(vector<int> party, vec_ZZ_pE shares);
+			vec_ZZ_pE create_one_shares(ZZ_pE a, long i);
 	};
 }
 

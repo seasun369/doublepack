@@ -169,4 +169,38 @@ vec_ZZ_pE scheme::packed_reconstruct_shares(vector<int> party, vec_ZZ_pE shares)
 	return value;
 }
 
+vec_ZZ_pE scheme::create_one_shares(ZZ_pE a, long i){
+	
+	vec_ZZ_pE shares;
+	shares.SetLength(m);
+
+	vector<ZZ_pE> coeff(d);
+
+	for(long i=0;i<d;i++) 
+	{
+		coeff[i] = random_ZZ_pE();
+	}
+
+	ZZ_pE z(0);
+	for(long j=0 ; j<d ; j++) 
+	{
+		z = z + (coeff[j] * power(beta_set[i],j));
+	}
+
+	coeff[0] = a-z+coeff[0];
+
+	for(long k=0 ; k<n ; k++) 
+	{
+		ZZ_pE x = alpha_set[k];
+		ZZ_pE y(0);
+		for(long j=0 ; j<d ; j++) 
+		{
+			y = y + (coeff[j] * power(x,j));
+		}
+		shares[k] = y;
+	}
+	return shares;
+
+}
+
 }

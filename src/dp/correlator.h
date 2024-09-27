@@ -196,6 +196,18 @@ namespace dp {
       }
     }
 
+    // Populate shares of e_i
+    void PrecomputeEi() {
+      for (std::size_t i = 0; i < mBatch_m; i++) {
+	    Shr shr(1);
+	      for (std::size_t j = 0; j < mBatch_m; ++j) {
+	        if (j == i) continue;
+	        shr *= (Scheme.alpha_set[mID+1] + Scheme.alpha_set[j]) / (Scheme.alpha_set[j] - Scheme.alpha_set[i]);
+	      }
+	    mSharesOfEi.emplace_back(shr);
+      }
+    }
+
     // Populate vandermonde matrix
     void PrecomputeVandermonde() {
       mVandermonde.reserve(mParties);
@@ -238,6 +250,7 @@ namespace dp {
 
     // Shares of e_i for current party
     std::vector<Shr> mSharesOfEij; // len = batchsize, eij = i+j*l
+    std::vector<Shr> mSharesOfEi; //len = batch_m
     std::vector<std::vector<FF>> mVandermonde_b;  // mParties*r x (mThreshold + 1)*r
     std::vector<std::vector<Shr>> mVandermonde; // mParties x (mThreshold + 1)
  

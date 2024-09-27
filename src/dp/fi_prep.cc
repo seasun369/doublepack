@@ -73,19 +73,24 @@ namespace dp {
     std::size_t n_amount = 3*mNMultBatches; // 2 for the two factors, 1 for the multiplication
     std::size_t n_blocks = (n_amount + (mThreshold + 1) -1) / (mThreshold + 1);
 
-    for ( std::size_t pack_idx = 0; pack_idx < mBatchSize; pack_idx++ ) {
+    for ( std::size_t pack_idx = 0; pack_idx < mBatch_m; pack_idx++ ) {
       for ( std::size_t block = 0; block < n_blocks; block++ ) {
-	// 1 sample secret and shares
-	FF secret = FF::Random(mPRG);
-	// FF secret(0);
+	      // 1 sample secret and shares
+	      vector<long> aa(mBatch_l, 0);
+        for(std::size_t i =0; i<mBatch_l; i++){
+          FF a = random_ZZ_p();
+          aa.emplace_back(conv<long>(a));
+        }
+        rmfe.set_input(aa);
+	      Shr secret = long2ZZpE(rmfe.get_result());
 
-	auto poly = scl::details::EvPolyFromSecretAndPointAndDegree(secret, FF(-pack_idx), degree, mPRG);
-	auto shares = scl::details::SharesFromEvPoly(poly, mParties);
+        auto poly = scl::details::EvPolyFromSecretAndPointAndDegree(secret, FF(-pack_idx), degree, mPRG);
+	      auto shares = scl::details::SharesFromEvPoly(poly, mParties);
 	
-	// 2 send shares
-	for ( std::size_t party = 0; party < mParties; party++ ){
-	  mNetwork->Party(party)->Send(shares[party]);
-	}
+	      // 2 send shares
+	      for ( std::size_t party = 0; party < mParties; party++ ){
+	        mNetwork->Party(party)->Send(shares[party]);
+	      }
       }
     }
 
