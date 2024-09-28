@@ -28,15 +28,15 @@ namespace packed_shamir
 		int n; //members
 		int m; //packed number
 		int d; //poly degree
-		int t; //corrupt parties
+		//int t; //corrupt parties
 		gr GR;
 		//vec_ZZ_pE alpha_set;
 		//vec_ZZ_pE beta_set;
 
 		public:
 
-			scheme(int members,int packed_number,int degree, int corrupt, gr galois_ring):
-			        n(members), m(packed_number), d(degree), t(corrupt), GR(galois_ring)
+			scheme(int members,int packed_number,int degree, gr galois_ring):
+			        n(members), m(packed_number), d(degree), GR(galois_ring)
 			{
 				alpha_set.SetLength(n);
 				beta_set.SetLength(m);

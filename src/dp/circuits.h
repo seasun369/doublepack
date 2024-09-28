@@ -291,10 +291,12 @@ namespace dp {
       mCorrelator.PrecomputeVandermonde();
     }
 
-//TODO: scheme1:d=n-m scheme2:d=n-1
     void init_scheme(){
-      int corrupt_parties = (mClients - 1) / 2;
-      Scheme = packed_shamir::scheme(mClients,mBatch_m,mClients-mBatch_m,corrupt_parties,gring); 
+      std::size_t corrupt_parties = (mClients - 1) / 2;
+      Scheme_nm = packed_shamir::scheme(mClients,mBatch_m,mClients-mBatch_m,gring); 
+      Scheme_n1 = packed_shamir::scheme(mClients,mBatch_m,mClients-1,gring);
+      //Scheme_m1 = packed_shamir::scheme(mClients,mBatch_m,mClients-mBatch_m,corrupt_parties,gring);
+      Scheme_t = packed_shamir::scheme(mClients,mBatch_m,corrupt_parties,gring);
     }
 
 
@@ -304,7 +306,10 @@ namespace dp {
     std::size_t mBatch_m;
 
     //packed scheme
-    packed_shamir::scheme Scheme;
+    packed_shamir::scheme Scheme_nm;
+    packed_shamir::scheme Scheme_n1;
+    //packed_shamir::scheme Scheme_m1;
+    packed_shamir::scheme Scheme_t;
 
     // List of layers. Each layer is itself a list of batches, which
     // is itself a list of batch_size gates

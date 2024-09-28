@@ -55,9 +55,9 @@ namespace dp {
   public:
     Correlator() {};
 
-    Correlator(std::size_t n_ind_shares, std::size_t n_mult_batches, std::size_t n_inout_batches, std::size_t batch_size, std::size_t batch_size_l, std::size_t batch_size_m, scheme mscheme) :
+    Correlator(std::size_t n_ind_shares, std::size_t n_mult_batches, std::size_t n_inout_batches, std::size_t batch_size, std::size_t batch_size_l, std::size_t batch_size_m, scheme scheme_nm, scheme scheme_n1, scheme scheme_t) :
       mNIndShrs(n_ind_shares), mNMultBatches(n_mult_batches), mNInOutBatches(n_inout_batches), \
-      mCTRIndShrs(0), mCTRMultBatches(0), mCTRInOutBatches(0), mBatchSize(batch_size),mBatch_l(batch_size_l),mBatch_m(batch_size_m),Scheme(mscheme) {
+      mCTRIndShrs(0), mCTRMultBatches(0), mCTRInOutBatches(0), mBatchSize(batch_size),mBatch_l(batch_size_l),mBatch_m(batch_size_m),Scheme_nm(scheme_nm),Scheme_n1(scheme_n1),Scheme_t(scheme_t) {
 
       mIndShrs.reserve(mNIndShrs);
       mMultBatchFIPrep.reserve(mNMultBatches);
@@ -189,7 +189,7 @@ namespace dp {
 	      Shr shr = e[k];
 	      for (std::size_t j = 0; j < mBatch_m; ++j) {
 	        if (j == i) continue;
-	        shr *= (Scheme.alpha_set[mID+1] + Scheme.alpha_set[j]) / (Scheme.alpha_set[j] - Scheme.alpha_set[i]); //TODO:
+	        shr *= (Scheme_nm.alpha_set[mID+1] + Scheme_nm.alpha_set[j]) / (Scheme_nm.alpha_set[j] - Scheme_nm.alpha_set[i]); //TODO:
 	      }
 	      mSharesOfEij.emplace_back(shr);
       }
@@ -202,7 +202,7 @@ namespace dp {
 	    Shr shr(1);
 	      for (std::size_t j = 0; j < mBatch_m; ++j) {
 	        if (j == i) continue;
-	        shr *= (Scheme.alpha_set[mID+1] + Scheme.alpha_set[j]) / (Scheme.alpha_set[j] - Scheme.alpha_set[i]);
+	        shr *= (Scheme_nm.alpha_set[mID+1] + Scheme_nm.alpha_set[j]) / (Scheme_nm.alpha_set[j] - Scheme_nm.alpha_set[i]);
 	      }
 	    mSharesOfEi.emplace_back(shr);
       }
@@ -236,7 +236,10 @@ namespace dp {
     std::size_t mNInOutBatches;
 
     //packed scheme
-    scheme Scheme;
+    packed_shamir::scheme Scheme_nm;
+    packed_shamir::scheme Scheme_n1;
+    //packed_shamir::scheme Scheme_m1;
+    packed_shamir::scheme Scheme_t;
 
     // Counters
     std::size_t mCTRIndShrs;

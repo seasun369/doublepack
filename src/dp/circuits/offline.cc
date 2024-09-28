@@ -122,7 +122,7 @@ namespace dp {
       std::size_t n_mult_batches = GetNMultBatches();
       std::size_t n_inout_batches = GetNInputBatches() + GetNOutputBatches();
 
-      mCorrelator = Correlator(n_ind_shares, n_mult_batches, n_inout_batches, mBatchSize, mBatch_l, mBatch_m, Scheme);
+      mCorrelator = Correlator(n_ind_shares, n_mult_batches, n_inout_batches, mBatchSize, mBatch_l, mBatch_m, Scheme_nm,Scheme_n1,Scheme_t);
       mCorrelator.SetNetwork(mNetwork, mID);
       mCorrelator.PrecomputeEij();
     }

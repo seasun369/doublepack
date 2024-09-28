@@ -84,8 +84,10 @@ namespace dp {
         rmfe.set_input(aa);
 	      Shr secret = long2ZZpE(rmfe.get_result());
 
-        auto poly = scl::details::EvPolyFromSecretAndPointAndDegree(secret, FF(-pack_idx), degree, mPRG);
-	      auto shares = scl::details::SharesFromEvPoly(poly, mParties);
+        shares = 
+
+        //auto poly = scl::details::EvPolyFromSecretAndPointAndDegree(secret, FF(-pack_idx), degree, mPRG);
+	      //auto shares = scl::details::SharesFromEvPoly(poly, mParties);
 	
 	      // 2 send shares
 	      for ( std::size_t party = 0; party < mParties; party++ ){
