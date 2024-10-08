@@ -26,7 +26,9 @@ TEST_CASE("pss")
 	int poly_degree = 3;
 	int corrupt_parties = 2;
 
-    packed_shamir::scheme Scheme(members,packed_number,poly_degree,corrupt_parties,galoisring);
+    //std::cout << members << std::endl;
+
+    packed_shamir::scheme Scheme(members,packed_number,poly_degree,galoisring);
 
     //std::cout << members << std::endl;
 

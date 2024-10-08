@@ -30,7 +30,7 @@ namespace dp {
   using FF = ZZ_p;
   using Shr = ZZ_pE;
   using Poly = scl::details::EvPolynomial<FF>;
-  using Vec = scl::Vec<FF>;
+  using Vec = vector<Shr>;
 
   template<typename T>
   using vec = std::vector<T>;

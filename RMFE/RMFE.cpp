@@ -48,6 +48,8 @@ void RMFE_GR::RMFE_GR_INIT1(){
     ZZ_p::init(q3);
     ZZ_pE::init(g_);
 
+    //cout << "Current modulus polynomial: " << ZZ_pE::modulus() << endl;
+
     ZZ_pX H;
     SetCoeff(H,1,1);
     ZZ_pE a;
@@ -148,10 +150,8 @@ void RMFE_GR::RMFE_GR_INIT2_cache(){
     ZZ_pX g_;
 
     /////  user need to modify here
-    SetCoeff(g_,8,1);
-    SetCoeff(g_,6,1);
     SetCoeff(g_,5,1);
-    SetCoeff(g_,1,1);
+    SetCoeff(g_,2,1);
     SetCoeff(g_,0,1);
     /////
 

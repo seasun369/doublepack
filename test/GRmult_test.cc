@@ -37,16 +37,6 @@ TEST_CASE("GRmult")
     ZzpE2Veclong(cc, vec_cc, gr_degree);
 
     vector<long> c_ = multiplyMatrixByVector(matrix_b, vec_a);
-
-    vector<long> c = compression(f, c_);
-
-    print(c);
-
-    for(std::size_t i = 0; i<c.size(); i++){
-        c[i] = fresh(c[i], positive_integer);
-    }
-    print(c);
-    print(vec_cc);
     }
 
 }

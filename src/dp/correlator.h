@@ -15,39 +15,39 @@ using namespace packed_shamir;
 namespace dp {
   struct MultBatchFIPrep {
     // Triples
-    FF mShrA;
-    FF mShrB;
-    FF mShrC;
+    Shr mShrA;
+    Shr mShrB;
+    Shr mShrC;
 
     // Shares of 0
-    FF mShrO1;
-    FF mShrO2;
-    FF mShrO3;
+    Shr mShrO1;
+    Shr mShrO2;
+    Shr mShrO3;
 
-    MultBatchFIPrep(FF lambda) {
+    MultBatchFIPrep(Shr lambda) {
       mShrA = lambda;
       mShrB = lambda;
       mShrC = lambda*lambda;
-      mShrO1 = FF(0);
-      mShrO2 = FF(0);
-      mShrO3 = FF(0);
+      mShrO1 = Shr(0);
+      mShrO2 = Shr(0);
+      mShrO3 = Shr(0);
     }
     MultBatchFIPrep() {
-      mShrA = FF(0);
-      mShrB = FF(0);
-      mShrC = FF(0);
-      mShrO1 = FF(0);
-      mShrO2 = FF(0);
-      mShrO3 = FF(0);
+      mShrA = Shr(0);
+      mShrB = Shr(0);
+      mShrC = Shr(0);
+      mShrO1 = Shr(0);
+      mShrO2 = Shr(0);
+      mShrO3 = Shr(0);
     }
   };
 
   struct IOBatchFIPrep {
     // Share of zero
-    FF mShrO;
+    Shr mShrO;
 
     IOBatchFIPrep() {
-      mShrO = FF(0);
+      mShrO = Shr(0);
     }
   };  
 
@@ -106,6 +106,9 @@ namespace dp {
 
     void GenUnpackedShrPartiesSend();
     void GenUnpackedShrPartiesReceive();
+
+    void GenUnpackedMaskPartiesSend();
+    void GenUnpackedMaskPartiesReceive();
 
     // Zero shares. Used for:
     // Inputs, Outputs, 3xMult
@@ -270,10 +273,11 @@ namespace dp {
     std::vector<IOBatchFIPrep> mIOBatchFIPrep;
 
     // HELPERS TO GET THE F.I. PREP
-    std::vector<std::vector<FF>> mUnpackedShrsA; // idx = packed index
-    std::vector<std::vector<FF>> mUnpackedShrsB; // idx = packed index
-    std::vector<std::vector<FF>> mUnpackedShrsMask; // idx = packed index
-    std::vector<std::vector<FF>> mZeroProdShrs; // idx = packed index
+    std::vector<std::vector<Shr>> mUnpackedShrsA; // idx = packed index
+    std::vector<std::vector<Shr>> mUnpackedShrsB; // idx = packed index
+    std::vector<std::vector<Shr>> mUnpackedShrsMask; // idx = packed index
+    std::vector<std::vector<Shr>> mZeroProdShrs; // idx = packed index
+    std::vector<std::vector<Shr>> mUnpackedShrsMaskPhiPsi; // idx = packed index
 
     
 

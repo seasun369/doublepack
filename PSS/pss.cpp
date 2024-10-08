@@ -203,4 +203,48 @@ vec_ZZ_pE scheme::create_one_shares(ZZ_pE a, long i){
 
 }
 
+ZZ_pE scheme::reconstruct_one_shares(vec_ZZ_pE shares, long i){
+
+	if(shares.length() != n) Error("PSS: reconstruct vector length mismatch");
+	
+	ZZ p = power(GR.p, GR.k);
+	ZZ_p::init(p);
+    ZZ_pX F = GR.Fps_poly;
+    ZZ_pE::init(F);
+
+	ZZ_pEX f;
+
+	interpolate_for_GR(f, alpha_set, shares, GR.p, GR.k, GR.r);
+
+	return eval(f, beta_set[i]);
+}
+
+vec_ZZ_pE scheme::create_shares_with_points(vector<ZZ_pE> a, vector<ZZ_pE>b){
+	ZZ p = power(GR.p, GR.k);
+	ZZ_p::init(p);
+    ZZ_pX F = GR.Fps_poly;
+    ZZ_pE::init(F);
+
+	ZZ_pEX f;
+
+	vec_ZZ_pE aa;
+	aa.SetLength(a.size());
+
+	vec_ZZ_pE bb;
+	bb.SetLength(b.size());
+
+	interpolate_for_GR(f, aa, bb, GR.p, GR.k, GR.r);
+
+	vec_ZZ_pE value;
+	value.SetLength(n);
+
+	for(int i=0; i<n; i++)
+	{
+		value[i] = eval(f, alpha_set[i]);
+	}
+
+	return value;
+
+}
+
 }
