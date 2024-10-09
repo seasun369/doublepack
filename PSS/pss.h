@@ -38,18 +38,22 @@ namespace packed_shamir
 			scheme(int members,int packed_number,int degree, gr galois_ring):
 			        n(members), m(packed_number), d(degree), GR(galois_ring)
 			{
-				
+				std::cout << "Initializing scheme with n=" << n << ", m=" << m << ", d=" << d << std::endl;
+				std::cout << "GR.set_T size: " << GR.set_T.length() << std::endl;
+
 				alpha_set.SetLength(n);
 				beta_set.SetLength(m);
 
 				for(int i=0; i<n; i++)
 				{		
 					alpha_set[i] = GR.set_T[i];
+					std::cout << "alpha_set[" << i << "] = " << alpha_set[i] << std::endl;
 				}
 
 				for(int i=0; i<m; i++)
 				{
 					beta_set[i] = GR.set_T[i+n];
+					std::cout << "beta_set[" << i << "] = " << beta_set[i] << std::endl;
 				}
 				
 			}

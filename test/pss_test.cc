@@ -41,8 +41,10 @@ TEST_CASE("pss")
     std::cout << test[0] << std::endl;
     std::cout << test[1] << std::endl;
 
+    std::cout << "Creating shares" << std::endl;
     vec_ZZ_pE v = Scheme.create_shares(test);
 
+    std::cout << "Shares created:" << std::endl;
     for(int i=0; i< members; i++)
     {
         std::cout << v[i] << std::endl;
@@ -50,14 +52,36 @@ TEST_CASE("pss")
 
     vector<int> party = {1,2,3,4,5};
 
+    std::cout << "Party members: ";
+    for(int i : party) {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+
+    std::cout << "Reconstructing shares" << std::endl;
     vec_ZZ_pE u = Scheme.packed_reconstruct_shares(party, v);
 
+    std::cout << "Shares reconstructed:" << std::endl;
     for(int i=0; i< packed_number; i++)
     {
         std::cout << u[i] << std::endl;
     }
+
+    std::cout << "Original test vector:" << std::endl;
     for(int i=0; i< packed_number; i++)
     {
+        std::cout << test[i] << std::endl;
+    }
+
+    std::cout << "Reconstructed shares:" << std::endl;
+    for(int i=0; i< packed_number; i++)
+    {
+        std::cout << u[i] << std::endl;
+    }
+
+    for(int i=0; i< packed_number; i++)
+    {
+        std::cout << "Comparing " << test[i] << " and " << u[i] << std::endl;
         REQUIRE(test[i] == u[i]);
     }
     }
