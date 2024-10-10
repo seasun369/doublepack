@@ -7,6 +7,9 @@ project(Doublepack_Project DESCRIPTION "Double-Packing")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native -pthread -std=gnu++17")
 
+set(FI "fi.x")
+set(OURS "ours.x")
+
 # 添加 NTL, GMP 和数学库的链接
 find_library(NTL_LIBRARY ntl REQUIRED)
 find_library(GMP_LIBRARY gmp REQUIRED)
@@ -27,14 +30,14 @@ set(DP_SOURCE_FILES
     #src/dp/input_gate.cc
     #src/dp/output_gate.cc
   
-    #src/dp/circuits/building.cc
-    #src/dp/circuits/cleartext.cc
-    #src/dp/circuits/generic.cc
-    #src/dp/circuits/online.cc
-    #src/dp/circuits/offline.cc  
+    src/dp/circuits/building.cc
+    src/dp/circuits/cleartext.cc
+    src/dp/circuits/generic.cc
+    src/dp/circuits/online.cc
+    src/dp/circuits/offline.cc  
   
-    #src/dp/correlator.cc  
-    #src/dp/fi_prep.cc  
+    src/dp/correlator.cc  
+    src/dp/fi_prep.cc  
 )
 
 set(TEST_SOURCE_FILES
@@ -64,3 +67,13 @@ target_include_directories(${TEST_EXECUTABLE} PUBLIC
 set( libscl "${CMAKE_SOURCE_DIR}/secure-computation-library/build/libscl.so.0.3" )
 target_link_libraries( ${TEST_EXECUTABLE} Catch2::Catch2 pthread scl ${NTL_LIBRARY} ${GMP_LIBRARY} ${M_LIBRARY} )
 
+set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -O2")
+  ## Executable of our protocol
+  add_executable(${FI} experiment/fi.cc ${DP_SOURCE_FILES})
+  target_include_directories(${FI} PUBLIC
+    "${CMAKE_SOURCE_DIR}/secure-computation-library/include"
+    "${CMAKE_SOURCE_DIR}/RMFE"
+    "${CMAKE_SOURCE_DIR}/GR"
+    "${CMAKE_SOURCE_DIR}/PSS"
+    "${CMAKE_SOURCE_DIR}/src")
+  target_link_libraries(${FI} pthread scl ${NTL_LIBRARY} ${GMP_LIBRARY} ${M_LIBRARY})
