@@ -405,7 +405,6 @@ void interpolate_for_GR(ZZ_pEX& f, const vec_ZZ_pE& a, const vec_ZZ_pE& b, ZZ p,
    res.SetLength(m);
 
    for (k = 0; k < m; k++) {
-
       const ZZ_pE& aa = a[k];
 
       set(t1);
@@ -419,7 +418,19 @@ void interpolate_for_GR(ZZ_pEX& f, const vec_ZZ_pE& a, const vec_ZZ_pE& b, ZZ p,
          mul(t2, t2, aa);
          add(t2, t2, res[i]);
       }
-      t1 = Inv(t1, s);
+
+      std::cout << "k = " << k << ", aa = " << aa << std::endl;
+      std::cout << "Before inversion: t1 = " << t1 << std::endl;
+      
+      try {
+         t1 = Inv(t1, s);
+         std::cout << "After inversion: t1 = " << t1 << std::endl;
+      } catch (const std::exception& e) {
+         std::cerr << "Error in Inv: " << e.what() << std::endl;
+         std::cerr << "k = " << k << ", aa = " << aa << ", t1 = " << t1 << std::endl;
+         throw;
+      }
+
       sub(t2, b[k], t2);
       mul(t1, t1, t2);
 

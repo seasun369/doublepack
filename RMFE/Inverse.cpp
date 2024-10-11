@@ -48,57 +48,68 @@ void Inv_matrix_2(mat_ZZ_p& A, long d){
     output the inverse of a ; s is the degree of galois ring
 */
 ZZ_pE Inv(ZZ_pE a, long s){
+    try {
+        if (IsZero(a)) {
+            std::cerr << "Error: Attempting to invert zero" << std::endl;
+            throw std::runtime_error("Zero is not invertible");
+        }
 
-    try{
-    mat_ZZ_p A1,A2;
-    vec_ZZ x,b;
+        mat_ZZ_p A1,A2;
+        vec_ZZ x,b;
 
-    x.SetLength(s);
-    b.SetLength(s);
-    clear(b);
-    b[0] = 1;
+        x.SetLength(s);
+        b.SetLength(s);
+        clear(b);
+        b[0] = 1;
 
-    Inv_matrix_1(A1,a,s);
-    Inv_matrix_2(A2,s);
+        Inv_matrix_1(A1,a,s);
+        Inv_matrix_2(A2,s);
 
-    ZZ d;
+        ZZ d;
 
-    mat_ZZ AB;
-    conv(AB,A1*A2);   
+        mat_ZZ AB;
+        conv(AB,A1*A2);   
 
+        if (determinant(AB) == 0) {
+            std::cerr << "Error: Matrix AB is singular" << std::endl;
+            throw std::runtime_error("Singular matrix in Inv function");
+        }
 
-    solve(d,x,AB,b);
+        solve(d,x,AB,b);
 
-    vec_ZZ_p x_p;
-    conv(x_p,x);
+        vec_ZZ_p x_p;
+        conv(x_p,x);
 
-    ZZ_pX poly;
+        ZZ_pX poly;
 
-    for(int i=0;i<s;i++){
-        SetCoeff(poly,i,x_p[i]);
-    }
+        for(int i=0;i<s;i++){
+            SetCoeff(poly,i,x_p[i]);
+        }
 
-    ZZ_pE a_inverse;
-    conv(a_inverse, poly);
+        ZZ_pE a_inverse;
+        conv(a_inverse, poly);
 
-    ZZ_pE m = a * a_inverse;
-    ZZ_p r;
-    ZZ_pX m_poly = rep(m);
-    r = coeff(m_poly, 0);
+        ZZ_pE m = a * a_inverse;
+        ZZ_p r;
+        ZZ_pX m_poly = rep(m);
+        r = coeff(m_poly, 0);
 
-    ZZ_p r_inverse = inv(r);
+        if (IsZero(r)) {
+            std::cerr << "Error: r is zero after multiplication" << std::endl;
+            throw std::runtime_error("Non-invertible element");
+        }
 
-    ZZ_pE r_pE;
-    conv(r_pE,r_inverse);
+        ZZ_p r_inverse = inv(r);
 
-    return a_inverse * r_pE;
+        ZZ_pE r_pE;
+        conv(r_pE,r_inverse);
+
+        return a_inverse * r_pE;
 
     } catch (const NTL::InvModErrorObject& e){
-        ZZ_pE a;
-        clear(a);
-        return a;
+        std::cerr << "NTL InvMod error: " << e.what() << std::endl;
+        throw std::runtime_error("Non-invertible element in Inv function");
     }
-
 }
 
 
