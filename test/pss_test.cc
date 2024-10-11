@@ -7,6 +7,8 @@
 using namespace std;
 using namespace packed_shamir;
 
+const int REPEAT_COUNT = 5; // Number of times to repeat each test
+
 void print_separator() {
     std::cout << "\n========================================\n" << std::endl;
 }
@@ -28,26 +30,30 @@ void run_pss_test(int members, int packed_number, int poly_degree, int corrupt_p
 
     packed_shamir::scheme Scheme(members, packed_number, poly_degree, galoisring);
 
-    vec_ZZ_pE test;
-    test.SetLength(packed_number);
+    for (int repeat = 0; repeat < REPEAT_COUNT; ++repeat) {
+        std::cout << "Iteration " << repeat + 1 << " of " << REPEAT_COUNT << std::endl;
 
-    for (int i = 0; i < packed_number; i++) {
-        test[i] = random_ZZ_pE();
+        vec_ZZ_pE test;
+        test.SetLength(packed_number);
+
+        for (int i = 0; i < packed_number; i++) {
+            test[i] = random_ZZ_pE();
+        }
+
+        vec_ZZ_pE v = Scheme.create_shares(test);
+        vector<int> party;
+        for (int i = 1; i <= members; i++) {
+            party.push_back(i);
+        }
+
+        vec_ZZ_pE u = Scheme.packed_reconstruct_shares(party, v);
+
+        for (int i = 0; i < packed_number; i++) {
+            REQUIRE(test[i] == u[i]);
+        }
     }
 
-    vec_ZZ_pE v = Scheme.create_shares(test);
-    vector<int> party;
-    for (int i = 1; i <= members; i++) {
-        party.push_back(i);
-    }
-
-    vec_ZZ_pE u = Scheme.packed_reconstruct_shares(party, v);
-
-    for (int i = 0; i < packed_number; i++) {
-        REQUIRE(test[i] == u[i]);
-    }
-
-    std::cout << "Test completed successfully." << std::endl;
+    std::cout << "All " << REPEAT_COUNT << " iterations completed successfully." << std::endl;
 }
 
 TEST_CASE("PSS with minimum valid polynomial degree", "[pss][degrees][min]") {
@@ -103,23 +109,27 @@ TEST_CASE("Original PSS test", "[pss][original]") {
 
     packed_shamir::scheme Scheme(members,packed_number,poly_degree,galoisring);
 
-    vec_ZZ_pE test;
-    test.SetLength(2);
+    for (int repeat = 0; repeat < REPEAT_COUNT; ++repeat) {
+        std::cout << "Iteration " << repeat + 1 << " of " << REPEAT_COUNT << std::endl;
 
-    test[0] = random_ZZ_pE();
-    test[1] = random_ZZ_pE();
+        vec_ZZ_pE test;
+        test.SetLength(2);
 
-    vec_ZZ_pE v = Scheme.create_shares(test);
+        test[0] = random_ZZ_pE();
+        test[1] = random_ZZ_pE();
 
-    vector<int> party = {1,2,3,4,5};
+        vec_ZZ_pE v = Scheme.create_shares(test);
 
-    vec_ZZ_pE u = Scheme.packed_reconstruct_shares(party, v);
+        vector<int> party = {1,2,3,4,5};
 
-    for(int i=0; i< packed_number; i++)
-    {
-        REQUIRE(test[i] == u[i]);
+        vec_ZZ_pE u = Scheme.packed_reconstruct_shares(party, v);
+
+        for(int i=0; i< packed_number; i++)
+        {
+            REQUIRE(test[i] == u[i]);
+        }
     }
-    std::cout << "Original PSS test completed successfully." << std::endl;
+    std::cout << "All " << REPEAT_COUNT << " iterations of Original PSS test completed successfully." << std::endl;
 }
 
 TEST_CASE("Test packed_create_shares and packed_reconstruct_shares", "[pss][packed]") {
@@ -135,26 +145,30 @@ TEST_CASE("Test packed_create_shares and packed_reconstruct_shares", "[pss][pack
 
     packed_shamir::scheme Scheme(members, packed_number, poly_degree, galoisring);
 
-    vec_ZZ_pE secret;
-    secret.SetLength(4);
-    for (int i = 0; i < 4; i++) {
-        secret[i] = random_ZZ_pE();
-    }
+    for (int repeat = 0; repeat < REPEAT_COUNT; ++repeat) {
+        std::cout << "Iteration " << repeat + 1 << " of " << REPEAT_COUNT << std::endl;
 
-    vector<vec_ZZ_pE> shares = Scheme.packed_create_shares(secret);
+        vec_ZZ_pE secret;
+        secret.SetLength(4);
+        for (int i = 0; i < 4; i++) {
+            secret[i] = random_ZZ_pE();
+        }
 
-    REQUIRE(shares.size() == packed_number);
+        vector<vec_ZZ_pE> shares = Scheme.packed_create_shares(secret);
 
-    for (int i = 0; i < packed_number; i++) {
-        vector<int> party = {1, 2, 3, 4, 5};
-        vec_ZZ_pE reconstructed = Scheme.packed_reconstruct_shares(party, shares[i]);
+        REQUIRE(shares.size() == packed_number);
 
-        REQUIRE(reconstructed.length() == packed_number);
-        for (int j = 0; j < packed_number; j++) {
-            REQUIRE(reconstructed[j] == secret[i * packed_number + j]);
+        for (int i = 0; i < packed_number; i++) {
+            vector<int> party = {1, 2, 3, 4, 5};
+            vec_ZZ_pE reconstructed = Scheme.packed_reconstruct_shares(party, shares[i]);
+
+            REQUIRE(reconstructed.length() == packed_number);
+            for (int j = 0; j < packed_number; j++) {
+                REQUIRE(reconstructed[j] == secret[i * packed_number + j]);
+            }
         }
     }
-    std::cout << "Test completed successfully." << std::endl;
+    std::cout << "All " << REPEAT_COUNT << " iterations completed successfully." << std::endl;
 }
 
 TEST_CASE("Test create_one_shares and reconstruct_one_shares", "[pss][one_share]") {
@@ -171,16 +185,20 @@ TEST_CASE("Test create_one_shares and reconstruct_one_shares", "[pss][one_share]
 
     packed_shamir::scheme Scheme(members, packed_number, poly_degree, galoisring);
 
-    ZZ_pE secret = random_ZZ_pE();
-    long index = 1;
+    for (int repeat = 0; repeat < REPEAT_COUNT; ++repeat) {
+        std::cout << "Iteration " << repeat + 1 << " of " << REPEAT_COUNT << std::endl;
 
-    vec_ZZ_pE shares = Scheme.create_one_shares(secret, index);
-    REQUIRE(shares.length() == members);
+        ZZ_pE secret = random_ZZ_pE();
+        long index = 1;
 
-    ZZ_pE reconstructed = Scheme.reconstruct_one_shares(shares, index);
-    REQUIRE(reconstructed == secret);
+        vec_ZZ_pE shares = Scheme.create_one_shares(secret, index);
+        REQUIRE(shares.length() == members);
 
-    std::cout << "Test completed successfully." << std::endl;
+        ZZ_pE reconstructed = Scheme.reconstruct_one_shares(shares, index);
+        REQUIRE(reconstructed == secret);
+    }
+
+    std::cout << "All " << REPEAT_COUNT << " iterations completed successfully." << std::endl;
 }
 
 TEST_CASE("Test create_shares_with_points", "[pss][shares_with_points]") {
@@ -206,62 +224,66 @@ TEST_CASE("Test create_shares_with_points", "[pss][shares_with_points]") {
         }
     };
 
-    vector<ZZ_pE> x_points, y_points;
-    for (int i = 0; i < poly_degree + 1; i++) {
-        ZZ_pE x, y;
-        do {
-            x = random_ZZ_pE();
-            y = random_ZZ_pE();
-        } while (!is_invertible(x) || !is_invertible(y));
-        x_points.push_back(x);
-        y_points.push_back(y);
-    }
+    for (int repeat = 0; repeat < REPEAT_COUNT; ++repeat) {
+        std::cout << "Iteration " << repeat + 1 << " of " << REPEAT_COUNT << std::endl;
 
-    vec_ZZ_pE shares;
-    bool success = false;
-    int max_attempts = 10;
+        vector<ZZ_pE> x_points, y_points;
+        for (int i = 0; i < poly_degree + 1; i++) {
+            ZZ_pE x, y;
+            do {
+                x = random_ZZ_pE();
+                y = random_ZZ_pE();
+            } while (!is_invertible(x) || !is_invertible(y));
+            x_points.push_back(x);
+            y_points.push_back(y);
+        }
 
-    for (int attempt = 0; attempt < max_attempts && !success; ++attempt) {
-        try {
-            shares = Scheme.create_shares_with_points(x_points, y_points);
-            success = true;
-        } catch (const std::exception& e) {
-            if (attempt == max_attempts - 1) {
-                FAIL("Failed to create shares after " + std::to_string(max_attempts) + " attempts");
+        vec_ZZ_pE shares;
+        bool success = false;
+        int max_attempts = 10;
+
+        for (int attempt = 0; attempt < max_attempts && !success; ++attempt) {
+            try {
+                shares = Scheme.create_shares_with_points(x_points, y_points);
+                success = true;
+            } catch (const std::exception& e) {
+                if (attempt == max_attempts - 1) {
+                    FAIL("Failed to create shares after " + std::to_string(max_attempts) + " attempts");
+                }
+                x_points.clear();
+                y_points.clear();
+                for (int i = 0; i < poly_degree + 1; i++) {
+                    ZZ_pE x, y;
+                    do {
+                        x = random_ZZ_pE();
+                        y = random_ZZ_pE();
+                    } while (!is_invertible(x) || !is_invertible(y));
+                    x_points.push_back(x);
+                    y_points.push_back(y);
+                }
             }
-            x_points.clear();
-            y_points.clear();
-            for (int i = 0; i < poly_degree + 1; i++) {
-                ZZ_pE x, y;
-                do {
-                    x = random_ZZ_pE();
-                    y = random_ZZ_pE();
-                } while (!is_invertible(x) || !is_invertible(y));
-                x_points.push_back(x);
-                y_points.push_back(y);
-            }
+        }
+
+        REQUIRE(success);
+        REQUIRE(shares.length() == members);
+
+        ZZ_pEX interpolated_poly;
+        vec_ZZ_pE x_vec, y_vec;
+        x_vec.SetLength(members);
+        y_vec.SetLength(members);
+
+        for (int i = 0; i < members; i++) {
+            x_vec[i] = Scheme.alpha_set[i];
+            y_vec[i] = shares[i];
+        }
+
+        interpolate_for_GR(interpolated_poly, x_vec, y_vec, galoisring.p, galoisring.k, galoisring.r);
+
+        for (int i = 0; i < members; i++) {
+            ZZ_pE y = eval(interpolated_poly, Scheme.alpha_set[i]);
+            REQUIRE(y == shares[i]);
         }
     }
 
-    REQUIRE(success);
-    REQUIRE(shares.length() == members);
-
-    ZZ_pEX interpolated_poly;
-    vec_ZZ_pE x_vec, y_vec;
-    x_vec.SetLength(members);
-    y_vec.SetLength(members);
-
-    for (int i = 0; i < members; i++) {
-        x_vec[i] = Scheme.alpha_set[i];
-        y_vec[i] = shares[i];
-    }
-
-    interpolate_for_GR(interpolated_poly, x_vec, y_vec, galoisring.p, galoisring.k, galoisring.r);
-
-    for (int i = 0; i < members; i++) {
-        ZZ_pE y = eval(interpolated_poly, Scheme.alpha_set[i]);
-        REQUIRE(y == shares[i]);
-    }
-
-    std::cout << "Test completed successfully." << std::endl;
+    std::cout << "All " << REPEAT_COUNT << " iterations completed successfully." << std::endl;
 }
