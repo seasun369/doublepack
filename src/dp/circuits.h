@@ -295,7 +295,7 @@ namespace dp {
       std::size_t corrupt_parties = (mClients - 1) / 2;
       Scheme_nm = packed_shamir::scheme(mClients,mBatch_m,mClients-mBatch_m,gring); 
       Scheme_n1 = packed_shamir::scheme(mClients,mBatch_m,mClients-1,gring);
-      //Scheme_m1 = packed_shamir::scheme(mClients,mBatch_m,mClients-mBatch_m,corrupt_parties,gring);
+      Scheme_m1 = packed_shamir::scheme(mClients,mBatch_m,mBatch_m-1,gring);
       Scheme_t = packed_shamir::scheme(mClients,mBatch_m,corrupt_parties,gring);
     }
 
@@ -308,7 +308,7 @@ namespace dp {
     //packed scheme
     packed_shamir::scheme Scheme_nm;
     packed_shamir::scheme Scheme_n1;
-    //packed_shamir::scheme Scheme_m1;
+    packed_shamir::scheme Scheme_m1;
     packed_shamir::scheme Scheme_t;
 
     // List of layers. Each layer is itself a list of batches, which
