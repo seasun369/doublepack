@@ -23,14 +23,14 @@ namespace dp {
     if (mID == input_batch->GetOwner()) {
       Vec recv_shares;
       Vec recv_secret;
-      recv_shares.Reserve(mParties);
-      recv_secret.Reserve(mBatchSize);
+      recv_shares.reserve(mParties);
+      recv_secret.reserve(mBatchSize);
 
       // Owner receives
       for (std::size_t i = 0; i < mParties; i++) {
 	FF buffer;
 	mNetwork->Party(i)->Recv(buffer);
-	recv_shares.Emplace(buffer);
+	recv_shares.emplace_back(buffer);
       }
       recv_secret = scl::details::SecretsFromSharesAndLength(recv_shares, mBatchSize);
 

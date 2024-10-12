@@ -26,7 +26,7 @@ namespace dp {
 
     FF GetMu() {
       if ( !mLearned )
-	throw std::invalid_argument("P1 hasn't learned this value yet");
+	      throw std::invalid_argument("P1 hasn't learned this value yet");
       return mMu;
     }
 
@@ -37,7 +37,7 @@ namespace dp {
 
     FF GetDummyLambda() {
       if ( !mLambdaSet )
-	throw std::invalid_argument("Lambda is not set in this input gate");
+	      throw std::invalid_argument("Lambda is not set in this input gate");
       return mLambda;
     }
 
@@ -48,19 +48,19 @@ namespace dp {
 
     FF GetIndvShrLambda() {
       if ( !mIndvShrLambdaCSet )
-	throw std::invalid_argument("IndvShrLambda is not set in this input gate");
+	      throw std::invalid_argument("IndvShrLambda is not set in this input gate");
       return mIndvShrLambdaC;
     }
 
     FF GetDn07Share() {
       if ( !mDn07Set )
-	throw std::invalid_argument("Dn07 shares is not set in this input gate");
+	      throw std::invalid_argument("Dn07 shares is not set in this input gate");
       return mDn07Share;
     }
     
     FF GetClear() {
       if ( !mEvaluated )
-	throw std::invalid_argument("This input has not been provided yet");
+	      throw std::invalid_argument("This input has not been provided yet");
       return mClear;
     };
 
@@ -88,8 +88,8 @@ namespace dp {
 
     void P1Receives() {
       if (mID == 0) {
-	mNetwork->Party(mOwnerID)->Recv(mMu);
-	mLearned = true;
+	      mNetwork->Party(mOwnerID)->Recv(mMu);
+	      mLearned = true;
       }
     }
 
@@ -131,16 +131,16 @@ namespace dp {
     // the batch_size
     void Append(std::shared_ptr<InputGate> input_gate) {
       if ( mInputGatesPtrs.size() == mBatchSize )
-	throw std::invalid_argument("Trying to batch more than batch_size gates");
+	      throw std::invalid_argument("Trying to batch more than batch_size gates");
       if ( input_gate->GetOwner() != mOwnerID )
-	throw std::invalid_argument("Owner IDs do not match");
+	      throw std::invalid_argument("Owner IDs do not match");
       mInputGatesPtrs.emplace_back(input_gate); }
 
     // For testing purposes: sets the required preprocessing for this
     // batch to be constant shares
     void _DummyPrep(FF lambda) {
       if ( mInputGatesPtrs.size() != mBatchSize )
-	throw std::invalid_argument("The number of input gates does not match the batch size");
+	      throw std::invalid_argument("The number of input gates does not match the batch size");
 
       mPackedShrLambda = lambda;
       for (auto input_gate : mInputGatesPtrs) input_gate->_DummyPrep(lambda);
@@ -159,11 +159,12 @@ namespace dp {
       Vec lambda;
 
       for (std::size_t i = 0; i < mBatchSize; i++) {
-	lambda.Emplace(mInputGatesPtrs[i]->GetDummyLambda());
+	      lambda.emplace_back(mInputGatesPtrs[i]->GetDummyLambda());
       }
       // Using deg = BatchSize-1 ensures there's no randomness involved
-      auto poly = scl::details::EvPolyFromSecretsAndDegree(lambda, mBatchSize-1, mPRG);
-      Vec shares = scl::details::SharesFromEvPoly(poly, mParties);
+      //auto poly = scl::details::EvPolyFromSecretsAndDegree(lambda, mBatchSize-1, mPRG);
+      //Vec shares = scl::details::SharesFromEvPoly(poly, mParties);
+      vec_ZZ_pE shares = Scheme_m1.create_shares(lambda);
 
       mPackedShrLambda = shares[mID];
     }
@@ -192,9 +193,9 @@ namespace dp {
       for (auto input_gate : mInputGatesPtrs) input_gate->SetNetwork(network, id);
     }
 
-    void SetPreprocessing(FF packed_shr_lambda) { mPackedShrLambda = packed_shr_lambda; }
+    void SetPreprocessing(Shr packed_shr_lambda) { mPackedShrLambda = packed_shr_lambda; }
 
-    FF GetPackedShrLambda() { return mPackedShrLambda; }
+    Shr GetPackedShrLambda() { return mPackedShrLambda; }
 
 
   private:
@@ -203,12 +204,12 @@ namespace dp {
 
     std::size_t mBatchSize;
 
-
+    packed_shamir::scheme Scheme_m1;
     // The input gates that are part of this batch
     vec<std::shared_ptr<InputGate>> mInputGatesPtrs;
 
     // The packed sharings associated to this batch
-    FF mPackedShrLambda;
+    Shr mPackedShrLambda;
 
     // Network-related
     std::shared_ptr<scl::Network> mNetwork;
@@ -232,11 +233,11 @@ namespace dp {
     void Append(std::shared_ptr<InputGate> input_gate) {
       auto current_batch = mBatches.back(); // accessing last elt
       if ( current_batch->HasRoom() ) {
-	current_batch->Append(input_gate);
+	      current_batch->Append(input_gate);
       } else {
-	auto new_batch = std::make_shared<InputBatch>(mOwnerID, mBatchSize);
-	new_batch->Append(input_gate);
-	mBatches.emplace_back(new_batch);
+	      auto new_batch = std::make_shared<InputBatch>(mOwnerID, mBatchSize);
+	      new_batch->Append(input_gate);
+	      mBatches.emplace_back(new_batch);
       }
     }
 
@@ -249,7 +250,7 @@ namespace dp {
 
       auto last_batch = mBatches.back(); // accessing last elt
       while ( last_batch->HasRoom() ) {
-	last_batch->Append(padding_gate);
+	      last_batch->Append(padding_gate);
       } 
       // assert(last_batch->HasRoom() == false); // PASSES
     }
