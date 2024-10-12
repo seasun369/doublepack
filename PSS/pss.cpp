@@ -280,37 +280,36 @@ vec_ZZ_pE scheme::packed_reconstruct_shares(vector<int> party, vec_ZZ_pE shares)
 }
 
 vec_ZZ_pE scheme::create_one_shares(ZZ_pE a, long i){
-	
-	vec_ZZ_pE shares;
-	shares.SetLength(m);
+    
+    vec_ZZ_pE shares;
+    shares.SetLength(n);
 
-	vector<ZZ_pE> coeff(d);
+    vector<ZZ_pE> coeff(d);
 
-	for(long i=0;i<d;i++) 
-	{
-		coeff[i] = random_ZZ_pE();
-	}
+    for(long j=0;j<d;j++) 
+    {
+        coeff[j] = random_ZZ_pE();
+    }
 
-	ZZ_pE z(0);
-	for(long j=0 ; j<d ; j++) 
-	{
-		z = z + (coeff[j] * power(beta_set[i],j));
-	}
+    ZZ_pE z(0);
+    for(long j=0 ; j<d ; j++) 
+    {
+        z = z + (coeff[j] * power(beta_set[i],j));
+    }
 
-	coeff[0] = a-z+coeff[0];
+    coeff[0] = a-z+coeff[0];
 
-	for(long k=0 ; k<n ; k++) 
-	{
-		ZZ_pE x = alpha_set[k];
-		ZZ_pE y(0);
-		for(long j=0 ; j<d ; j++) 
-		{
-			y = y + (coeff[j] * power(x,j));
-		}
-		shares[k] = y;
-	}
-	return shares;
-
+    for(long k=0 ; k<n ; k++) 
+    {
+        ZZ_pE x = alpha_set[k];
+        ZZ_pE y(0);
+        for(long j=0 ; j<d ; j++) 
+        {
+            y = y + (coeff[j] * power(x,j));
+        }
+        shares[k] = y;
+    }
+    return shares;
 }
 
 ZZ_pE scheme::reconstruct_one_shares(vec_ZZ_pE shares, long i){
@@ -330,31 +329,55 @@ ZZ_pE scheme::reconstruct_one_shares(vec_ZZ_pE shares, long i){
 }
 
 vec_ZZ_pE scheme::create_shares_with_points(vector<ZZ_pE> a, vector<ZZ_pE>b){
-	ZZ p = power(GR.p, GR.k);
-	ZZ_p::init(p);
+    if (a.size() != b.size() || a.size() == 0) {
+        throw std::invalid_argument("Input vectors must have the same non-zero size");
+    }
+
+    std::cout << "create_shares_with_points: Input sizes: " << a.size() << std::endl;
+
+    ZZ p = power(GR.p, GR.k);
+    ZZ_p::init(p);
     ZZ_pX F = GR.Fps_poly;
     ZZ_pE::init(F);
 
-	ZZ_pEX f;
+    ZZ_pEX f;
+    vec_ZZ_pE value;
+    value.SetLength(n);
 
-	vec_ZZ_pE aa;
-	aa.SetLength(a.size());
+    bool success = false;
+    int max_attempts = 10;  // 最大尝试次数
+    
+    for (int attempt = 0; attempt < max_attempts && !success; ++attempt) {
+        try {
+            vec_ZZ_pE aa, bb;
+            aa.SetLength(a.size());
+            bb.SetLength(b.size());
 
-	vec_ZZ_pE bb;
-	bb.SetLength(b.size());
+            for (size_t i = 0; i < a.size(); i++) {
+                aa[i] = (attempt == 0) ? a[i] : random_ZZ_pE();
+                bb[i] = (attempt == 0) ? b[i] : random_ZZ_pE();
+                std::cout << "Attempt " << attempt << ", Point " << i << ": (" << aa[i] << ", " << bb[i] << ")" << std::endl;
+            }
 
-	interpolate_for_GR(f, aa, bb, GR.p, GR.k, GR.r);
+            std::cout << "Calling interpolate_for_GR..." << std::endl;
+            interpolate_for_GR(f, aa, bb, GR.p, GR.k, GR.r);
+            std::cout << "Interpolation successful. Polynomial: " << f << std::endl;
 
-	vec_ZZ_pE value;
-	value.SetLength(n);
+            for(int i=0; i<n; i++) {
+                value[i] = eval(f, alpha_set[i]);
+                std::cout << "f(" << alpha_set[i] << ") = " << value[i] << std::endl;
+            }
 
-	for(int i=0; i<n; i++)
-	{
-		value[i] = eval(f, alpha_set[i]);
-	}
+            success = true;
+        } catch (const std::exception& e) {
+            std::cerr << "Attempt " << attempt << " failed: " << e.what() << std::endl;
+            if (attempt == max_attempts - 1) {
+                throw std::runtime_error("Failed to find invertible points after max attempts");
+            }
+        }
+    }
 
-	return value;
-
+    return value;
 }
 
 }
