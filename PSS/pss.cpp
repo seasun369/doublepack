@@ -173,6 +173,144 @@ vec_ZZ_pE scheme::create_shares(vec_ZZ_pE a)
 
 }
 
+vec_ZZ_pE scheme::create_shares(vector<ZZ_pE> b){
+	std::cout << "Entering create_shares" << std::endl;
+	std::cout << "Input vector a: ";
+
+	vec_ZZ_pE a;
+	a.SetLength(b.size());
+
+	for (long i = 0; i < b.size(); i++) {
+		a[i]=b[i];
+		std::cout << a[i] << " ";
+	}
+	std::cout << std::endl;
+
+	vec_ZZ_pE value;
+	value.SetLength(n);
+	long _m = a.length();
+	if(m != _m) Error("PSS: vector length mismatch");
+
+	ZZ p = power(GR.p, GR.k);
+	ZZ_p::init(p);
+    ZZ_pX F = GR.Fps_poly;
+    ZZ_pE::init(F);
+
+	ZZ_pEX f;
+
+	
+	std::cout << "Beta set used for interpolation:" << std::endl;
+	for(int i=0; i<m; i++)
+	{
+		std::cout << "beta_set[" << i << "] = " << beta_set[i] << std::endl;
+	}
+
+	std::cout << "Interpolating in create_shares" << std::endl;
+	interpolate_for_GR(f, beta_set, a, GR.p, GR.k, GR.r);
+
+	// 添加这行来打印初始的多项式 f
+	std::cout << "Initial polynomial f for secret sharing: " << f << std::endl;
+
+	// 检查初始秘密是否匹配 eval(f, beta_set[i])
+	std::cout << "Checking if initial secret matches eval(f, beta_set[i]):" << std::endl;
+	for(int i=0; i<m; i++)
+	{
+		ZZ_pE result = eval(f, beta_set[i]);
+		std::cout << "beta_set[" << i << "] = " << beta_set[i] << std::endl;
+		std::cout << "Initial secret: " << a[i] << std::endl;
+		std::cout << "eval(f, beta_set[" << i << "]) = " << result << std::endl;
+		if (a[i] == result) {
+			std::cout << "Match for index " << i << std::endl;
+		} else {
+			std::cout << "Mismatch for index " << i << std::endl;
+		}
+	}
+
+	vec_ZZ_pE res;
+	res.SetLength(d-m);
+
+	while(res[d-m-1] == conv<ZZ_pE>(0))
+	{
+		for(int i=0; i<d-m; i++)
+		{
+			ZZ_pE temp = random_ZZ_pE();
+			res[i] = temp;
+		}
+	}
+
+	ZZ_pEX g;
+	g.rep = res;
+
+	vec_ZZ_pE ret;
+    ret.SetLength(m);
+	ret[0] = conv<ZZ_pE>(1);
+	for (int i = 1; i < m; i++)
+	{
+		ret[i] = conv<ZZ_pE>(0);
+	}
+	
+	for(int i=0; i<m; i++)
+	{
+		vec_ZZ_pE temp;
+		temp.SetLength(2);
+		temp[0] = -beta_set[i];
+		temp[1] = conv<ZZ_pE>(1);
+		ret = multiplyPolynomials(ret, temp);
+	}
+
+	ZZ_pEX h;
+	h.rep = ret;
+
+	// 添加这段代码来检查 h(beta_i) = 0
+	std::cout << "Checking if h(beta_i) = 0 for all i:" << std::endl;
+	for(int i=0; i<m; i++)
+	{
+		ZZ_pE h_beta_i = eval(h, beta_set[i]);
+		std::cout << "h(beta_" << i << ") = " << h_beta_i << std::endl;
+		if (IsZero(h_beta_i)) {
+			std::cout << "h(beta_" << i << ") is zero" << std::endl;
+		} else {
+			std::cout << "h(beta_" << i << ") is NOT zero" << std::endl;
+		}
+	}
+
+	ZZ_pEX poly = g*h + f;
+
+	// 添加这段代码来检查 poly(beta_i) = f(beta_i)
+	std::cout << "Checking if poly(beta_i) = f(beta_i) for all i:" << std::endl;
+	for(int i=0; i<m; i++)
+	{
+		ZZ_pE poly_beta_i = eval(poly, beta_set[i]);
+		ZZ_pE f_beta_i = eval(f, beta_set[i]);
+		std::cout << "poly(beta_" << i << ") = " << poly_beta_i << std::endl;
+		std::cout << "f(beta_" << i << ") = " << f_beta_i << std::endl;
+		if (poly_beta_i == f_beta_i) {
+			std::cout << "poly(beta_" << i << ") = f(beta_" << i << ")" << std::endl;
+		} else {
+			std::cout << "poly(beta_" << i << ") != f(beta_" << i << ")" << std::endl;
+		}
+	}
+
+	// 添加这行来打印最终的多项式 poly
+	std::cout << "Final polynomial poly before share creation: " << poly << std::endl;
+
+	std::cout << "Evaluating shares:" << std::endl;
+	for(int i=0; i<n; i++)
+	{
+		ZZ_pE result = eval(poly, alpha_set[i]);
+		std::cout << "Evaluating poly(" << alpha_set[i] << ") = " << result << std::endl;
+		value[i] = result;
+		std::cout << "Share " << i << ": " << value[i] << std::endl;
+	}
+
+	std::cout << "Polynomial f after interpolation: " << f << std::endl;
+
+	std::cout << "Final polynomial poly: " << poly << std::endl;
+
+	std::cout << "Exiting create_shares" << std::endl;
+	return value;
+}
+
 vector<vec_ZZ_pE> scheme::packed_create_shares(vec_ZZ_pE secret)
 {
 	long number = secret.length();
