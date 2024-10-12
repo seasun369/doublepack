@@ -100,8 +100,8 @@ namespace dp {
 
     FF GetMu() {
       if ( !mLearned ) {
-	mMu = mLeft->GetMu() + mRight->GetMu();
-	mLearned = true;
+	      mMu = mLeft->GetMu() + mRight->GetMu();
+	      mLearned = true;
       }
       return mMu;
     }

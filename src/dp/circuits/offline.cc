@@ -132,46 +132,46 @@ namespace dp {
     void Circuit::MapCorrToCircuit() {
       // Individual shares
       for (auto input_gate : mInputGates) {
-	mCorrelator.PopulateIndvShrs(input_gate);
+	      mCorrelator.PopulateIndvShrs(input_gate);
       }
       for (std::size_t layer = 0; layer < GetDepth(); layer++) {
-	for (auto mult_gate : mFlatMultLayers[layer]) {
-	  mCorrelator.PopulateIndvShrs(mult_gate);
-	}
+	      for (auto mult_gate : mFlatMultLayers[layer]) {
+	        mCorrelator.PopulateIndvShrs(mult_gate);
+	      }
       }
       for (auto add_gate : mAddGates) {
-	mCorrelator.PopulateIndvShrs(add_gate);
+	      mCorrelator.PopulateIndvShrs(add_gate);
       }
       for (auto output_gate : mOutputGates) {
-	mCorrelator.PopulateIndvShrs(output_gate);
+	      mCorrelator.PopulateIndvShrs(output_gate);
       }
 
       // Input batches
       for (auto input_layer : mInputLayers) {
-	for (auto input_batch : input_layer.mBatches) {
-	  mCorrelator.PopulateInputBatches(input_batch);
-	}
+	      for (auto input_batch : input_layer.mBatches) {
+	        mCorrelator.PopulateInputBatches(input_batch);
+	      }
       }
       // Output batches
       for (auto output_layer : mOutputLayers) {
-	for (auto output_batch : output_layer.mBatches) {
-	  mCorrelator.PopulateOutputBatches(output_batch);
-	}
+	      for (auto output_batch : output_layer.mBatches) {
+	        mCorrelator.PopulateOutputBatches(output_batch);
+	      }
       }
       // Mult batches
       for (auto mult_layer : mMultLayers) {
-	for (auto mult_batch : mult_layer.mBatches) {
-	  mCorrelator.PopulateMultBatches(mult_batch);
-	}
+	      for (auto mult_batch : mult_layer.mBatches) {
+	        mCorrelator.PopulateMultBatches(mult_batch);
+	      }
       }
     }
 
     // Prep inputs & outputs
     void Circuit::PrepMultPartiesSendP1() {
       for (auto mult_layer : mMultLayers) {
-	for (auto mult_batch : mult_layer.mBatches) {
-	  mCorrelator.PrepMultPartiesSendP1(mult_batch);
-	}
+	      for (auto mult_batch : mult_layer.mBatches) {
+	        mCorrelator.PrepMultPartiesSendP1(mult_batch);
+	      }
       }
     }
     void Circuit::PrepMultP1ReceivesAndSends() {
