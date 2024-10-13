@@ -37,7 +37,7 @@ set(DP_SOURCE_FILES
     #src/dp/circuits/offline.cc  
   
     #src/dp/correlator.cc  
-    #src/dp/fi_prep.cc  
+    src/dp/fi_prep.cc  
 )
 
 set(TEST_SOURCE_FILES
@@ -45,6 +45,7 @@ set(TEST_SOURCE_FILES
     test/pss_test.cc
     test/GRmult_test.cc
     test/RMFE_test.cc
+    test/fi_prep_test.cc
 )
 
 add_subdirectory( secure-computation-library )

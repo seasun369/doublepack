@@ -184,7 +184,7 @@ namespace dp {
         vector<long> temp(mBatch_l, 0);
         temp[i] = 1;
         rmfe.set_input(temp);
-        ZZ_pE e[i] = long2ZZpE(rmfe.get_result());
+        e[i] = long2ZZpE(rmfe.get_result());
       }
 
       for(std::size_t k = 0; k < mBatch_l; k++) {

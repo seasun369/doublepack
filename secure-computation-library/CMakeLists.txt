@@ -2,6 +2,9 @@ cmake_minimum_required( VERSION 3.14 )
 
 project( scl VERSION 0.3 DESCRIPTION "Secure Computation Library" )
 
+find_library(NTL_LIBRARY ntl REQUIRED)
+find_library(GMP_LIBRARY gmp REQUIRED)
+
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}")
 set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -march=native -Wall -Wextra -pedantic -Werror -std=gnu++17")
 
@@ -69,15 +72,17 @@ if(CMAKE_BUILD_TYPE MATCHES Debug)
   add_compile_definitions(MAX_MAT_READ_SIZE=1024)
 
   add_executable( ${TEST_EXECUTABLE} ${SCL_SOURCE_FILES} ${TEST_SOURCE_FILES} )
-  target_link_libraries( ${TEST_EXECUTABLE} Catch2::Catch2 pthread )
+  target_link_libraries( ${TEST_EXECUTABLE} Catch2::Catch2 pthread ${NTL_LIBRARY} ${GMP_LIBRARY} )
   catch_discover_tests( ${TEST_EXECUTABLE} )
 
   # Also compile library (for tests in TurboPack)
   add_library( scl SHARED ${SCL_SOURCE_FILES} )
   set_target_properties( scl PROPERTIES VERSION ${PROJECT_VERSION} )
+  target_link_libraries( scl ${NTL_LIBRARY} ${GMP_LIBRARY} )
 
 else()
   set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -O2")
   add_library( scl SHARED ${SCL_SOURCE_FILES} )
   set_target_properties( scl PROPERTIES VERSION ${PROJECT_VERSION} )
+  target_link_libraries( scl ${NTL_LIBRARY} ${GMP_LIBRARY} )
 endif()
