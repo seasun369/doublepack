@@ -417,6 +417,91 @@ vec_ZZ_pE scheme::packed_reconstruct_shares(vector<int> party, vec_ZZ_pE shares)
 	return value;
 }
 
+vec_ZZ_pE scheme::packed_reconstruct_shares(vector<ZZ_pE> shrs)
+{
+	vector<int> party;
+    for (int i = 1; i <=n; i++) {
+        party.push_back(i);
+    }
+
+	vec_ZZ_pE shares;
+	shares.SetLength(shrs.size());
+
+	for (long i = 0; i < shrs.size(); i++) {
+		shares[i]=shrs[i];
+		//std::cout << a[i] << " ";
+	}
+
+	std::cout << "Entering packed_reconstruct_shares" << std::endl;
+	std::cout << "Party size: " << party.size() << std::endl;
+	std::cout << "Shares size: " << shares.length() << std::endl;
+
+	long num = party.size();
+
+	if(num != shares.length()) {
+		std::cout << "Error: size mismatch" << std::endl;
+		Error("PSS: reconstruct vector length mismatch");
+	}
+
+	vec_ZZ_pE points;
+	points.SetLength(num);
+	std::cout << "Points vector created with size: " << points.length() << std::endl;
+
+	long j = 0;
+	for(auto i : party)
+	{
+		std::cout << "Processing party member: " << i << std::endl;
+		if(i <= 0 || i > alpha_set.length()) {
+			std::cout << "Error: Invalid party member index" << std::endl;
+			Error("PSS: Invalid party member index");
+		}
+		points[j] = alpha_set[i-1];  // 使用 i-1 作为索引
+		j++;
+	}
+
+	std::cout << "Points after assignment:" << std::endl;
+	for (long i = 0; i < points.length(); i++) {
+		std::cout << "Point " << i << ": " << points[i] << std::endl;
+	}
+
+	std::cout << "Shares:" << std::endl;
+	for (long i = 0; i < shares.length(); i++) {
+		std::cout << "Share " << i << ": " << shares[i] << std::endl;
+	}
+
+	ZZ p = power(GR.p, GR.k);
+	ZZ_p::init(p);
+    ZZ_pX F = GR.Fps_poly;
+    ZZ_pE::init(F);
+
+	ZZ_pEX f;
+
+	std::cout << "Interpolating in packed_reconstruct_shares" << std::endl;
+	interpolate_for_GR(f, points, shares, GR.p, GR.k, GR.r);
+
+	std::cout << "Interpolated polynomial f: " << f << std::endl;
+
+	vec_ZZ_pE value;
+	value.SetLength(m);
+
+	std::cout << "Beta set used for reconstruction:" << std::endl;
+	for(int i=0; i<m; i++)
+	{
+		std::cout << "beta_set[" << i << "] = " << beta_set[i] << std::endl;
+	}
+
+	for(int i=0; i<m; i++)
+	{
+		ZZ_pE result = eval(f, beta_set[i]);
+		std::cout << "Evaluating f(" << beta_set[i] << ") = " << result << std::endl;
+		value[i] = result;
+		std::cout << "Reconstructed value " << i << ": " << value[i] << std::endl;
+	}
+
+	std::cout << "Exiting packed_reconstruct_shares" << std::endl;
+	return value;
+}
+
 vec_ZZ_pE scheme::create_one_shares(ZZ_pE a, long i){
     
     vec_ZZ_pE shares;

@@ -108,6 +108,7 @@ namespace dp {
       _DummyPrep(FF(0), FF(0), FF(0));
     };
     
+    //TODO: different from turbopack in online_mult phase
     // Generates the preprocessing from the lambdas of the inputs
     void PrepFromDummyLambdas() {
       Vec lambda_A;
@@ -126,14 +127,20 @@ namespace dp {
       }
       
       // Using deg = BatchSize-1 ensures there's no randomness involved
-      auto poly_A = scl::details::EvPolyFromSecretsAndDegree(lambda_A, mBatchSize-1, mPRG);
-      mPackedShrLambdaA = poly_A.Evaluate(FF(mID));
+      //auto poly_A = scl::details::EvPolyFromSecretsAndDegree(lambda_A, mBatchSize-1, mPRG);
+      //mPackedShrLambdaA = poly_A.Evaluate(FF(mID));
+      vec_ZZ_pE shares_A = Scheme_m1.create_shares(lambda_A);
+      mPackedShrLambdaA = shares_A[mID];
 	
-      auto poly_B = scl::details::EvPolyFromSecretsAndDegree(lambda_B, mBatchSize-1, mPRG);
-      mPackedShrLambdaB = poly_B.Evaluate(FF(mID));
+      //auto poly_B = scl::details::EvPolyFromSecretsAndDegree(lambda_B, mBatchSize-1, mPRG);
+      //mPackedShrLambdaB = poly_B.Evaluate(FF(mID));
+      vec_ZZ_pE shares_B = Scheme_m1.create_shares(lambda_B);
+      mPackedShrLambdaA = shares_B[mID];
 
-      auto poly_C = scl::details::EvPolyFromSecretsAndDegree(delta_C, mBatchSize-1, mPRG);
-      mPackedShrDeltaC = poly_C.Evaluate(FF(mID));
+      //auto poly_C = scl::details::EvPolyFromSecretsAndDegree(delta_C, mBatchSize-1, mPRG);
+      //mPackedShrDeltaC = poly_C.Evaluate(FF(mID));
+      vec_ZZ_pE shares_C = Scheme_m1.create_shares(delta_C);
+      mPackedShrDeltaC = shares_C[mID];
     }
 
     // For cleartext evaluation: calls GetClear on all its gates to
@@ -191,6 +198,8 @@ namespace dp {
   private:
     std::size_t mBatchSize;
 
+    packed_shamir::scheme Scheme_m1;//TODO: should init
+
     // The mult gates that are part of this batch
     vec<std::shared_ptr<MultGate>> mMultGatesPtrs;
 
@@ -206,8 +215,8 @@ namespace dp {
 
     // Intermediate-protocol
     scl::PRG mPRG;
-    FF mPackedShrMuA;    // Shares of mu_alpha
-    FF mPackedShrMuB;    // Shares of mu_beta
+    Shr mPackedShrMuA;    // Shares of mu_alpha
+    Shr mPackedShrMuB;    // Shares of mu_beta
   };
 
   // Basically a collection of batches

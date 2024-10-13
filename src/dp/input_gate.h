@@ -124,7 +124,7 @@ namespace dp {
   class InputBatch {
   public:
     InputBatch(std::size_t owner_id, std::size_t batch_size) : mOwnerID(owner_id), mBatchSize(batch_size) {
-      mInputGatesPtrs.reserve(mBatchSize);
+      mInputGatesPtrs.reserve(mBatchSize); //TODO:should add one layer
     };
 
     // Adds a new input_gate to the batch. It cannot add more gates than
@@ -156,7 +156,7 @@ namespace dp {
                                             
     // Generates the preprocessing from the lambdas of the inputs
     void PrepFromDummyLambdas() {
-      Vec lambda;
+      Vec lambda;//TODO:should be vector<FF>,length = ml and do phi^prime
 
       for (std::size_t i = 0; i < mBatchSize; i++) {
 	      lambda.emplace_back(mInputGatesPtrs[i]->GetDummyLambda());
@@ -204,7 +204,7 @@ namespace dp {
 
     std::size_t mBatchSize;
 
-    packed_shamir::scheme Scheme_m1;
+    packed_shamir::scheme Scheme_m1; //TODO:should init
     // The input gates that are part of this batch
     vec<std::shared_ptr<InputGate>> mInputGatesPtrs;
 

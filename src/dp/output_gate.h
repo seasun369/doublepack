@@ -142,16 +142,16 @@ namespace dp {
     // the batch_size
     void Append(std::shared_ptr<OutputGate> output_gate) {
       if ( mOutputGatesPtrs.size() == mBatchSize )
-	throw std::invalid_argument("Trying to batch more than batch_size gates");
+	      throw std::invalid_argument("Trying to batch more than batch_size gates");
       if ( output_gate->GetOwner() != mOwnerID )
-	throw std::invalid_argument("Owner IDs do not match");
+	      throw std::invalid_argument("Owner IDs do not match");
       mOutputGatesPtrs.emplace_back(output_gate); }
 
     // For testing purposes: sets the required preprocessing for this
     // batch to be constant shares
     void _DummyPrep(FF lambda) {
       if ( mOutputGatesPtrs.size() != mBatchSize )
-	throw std::invalid_argument("The number of output gates does not match the batch size");
+	      throw std::invalid_argument("The number of output gates does not match the batch size");
 
       mPackedShrLambda = lambda;
       for (auto input_gate : mOutputGatesPtrs) input_gate->_DummyPrep(lambda);
@@ -173,8 +173,9 @@ namespace dp {
 	      lambda.emplace_back(mOutputGatesPtrs[i]->GetDummyLambda());
       }
       // Using deg = BatchSize-1 ensures there's no randomness involved
-      auto poly = scl::details::EvPolyFromSecretsAndDegree(lambda, mBatchSize-1, mPRG);
-      Vec shares = scl::details::SharesFromEvPoly(poly, mParties);
+      //auto poly = scl::details::EvPolyFromSecretsAndDegree(lambda, mBatchSize-1, mPRG);
+      //Vec shares = scl::details::SharesFromEvPoly(poly, mParties);
+      vec_ZZ_pE shares = Scheme_m1.create_shares(lambda);
 
       mPackedShrLambda = shares[mID];	
     }
@@ -213,6 +214,8 @@ namespace dp {
 
     // The output gates that are part of this batch
     vec<std::shared_ptr<OutputGate>> mOutputGatesPtrs;
+
+    packed_shamir::scheme Scheme_m1;//TODO: should init
 
     // The packed sharings associated to this batch
     Shr mPackedShrLambda;
