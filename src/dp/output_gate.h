@@ -27,16 +27,16 @@ namespace dp {
 
     FF GetMu() {
       if ( !mLearned ) {
-	mMu = mLeft->GetMu();
-	mLearned = true;
+	      mMu = mLeft->GetMu();
+	      mLearned = true;
       }
       return mMu;
     }
 
     FF GetDummyLambda() {
       if ( !mLambdaSet ) {
-	mLambda = mLeft->GetDummyLambda();
-	mLambdaSet = true;
+	      mLambda = mLeft->GetDummyLambda();
+	      mLambdaSet = true;
       }
       return mLambda;
     }    
@@ -49,24 +49,24 @@ namespace dp {
 
     FF GetIndvShrLambda() {
       if ( !mIndvShrLambdaCSet ) {
-	mIndvShrLambdaC = mLeft->GetIndvShrLambda();
-	mIndvShrLambdaCSet = true;
+	      mIndvShrLambdaC = mLeft->GetIndvShrLambda();
+	      mIndvShrLambdaCSet = true;
       }
       return mLambda;
     }    
 
-    FF GetDn07Share() {
-      if ( !mDn07Set ) {
-	mDn07Share = mLeft->GetDn07Share();
-	mDn07Set = true;
-      }
-      return mDn07Share;
-    }    
+//    FF GetDn07Share() {
+//      if ( !mDn07Set ) {
+//	      mDn07Share = mLeft->GetDn07Share();
+//	      mDn07Set = true;
+//     }
+//      return mDn07Share;
+//    }    
 
     FF GetClear() {
       if ( !mEvaluated ) {
-	mClear = mLeft->GetClear();
-	mEvaluated = true;
+	    mClear = mLeft->GetClear();
+	    mEvaluated = true;
       }
       return mClear;
     }
@@ -90,16 +90,16 @@ namespace dp {
     // First step of the protocol where P1 sends mu to the owner
     void P1SendsMu() {
       if ( mID == 0 ) {
-	mNetwork->Party(mOwnerID)->Send(GetMu());
+	      mNetwork->Party(mOwnerID)->Send(GetMu());
       }
     }
     
     // The owner receives mu and sets the final value
     void OwnerReceivesMu() {
       if ( mID == mOwnerID ) {
-	FF mu;
-	mNetwork->Party(0)->Recv(mu);
-	mValue = mLambda + mu;
+	      FF mu;
+	      mNetwork->Party(0)->Recv(mu);
+	      mValue = mLambda + mu;
       }
     }
 
@@ -170,7 +170,7 @@ namespace dp {
       Vec lambda;
 
       for (std::size_t i = 0; i < mBatchSize; i++) {
-	lambda.Emplace(mOutputGatesPtrs[i]->GetDummyLambda());
+	      lambda.emplace_back(mOutputGatesPtrs[i]->GetDummyLambda());
       }
       // Using deg = BatchSize-1 ensures there's no randomness involved
       auto poly = scl::details::EvPolyFromSecretsAndDegree(lambda, mBatchSize-1, mPRG);
@@ -201,9 +201,9 @@ namespace dp {
       for (auto output_gate : mOutputGatesPtrs) output_gate->SetNetwork(network, id);
     }
 
-    void SetPreprocessing(FF packed_shr_lambda) { mPackedShrLambda = packed_shr_lambda; }
+    void SetPreprocessing(Shr packed_shr_lambda) { mPackedShrLambda = packed_shr_lambda; }
 
-    FF GetPackedShrLambda() { return mPackedShrLambda; }
+    Shr GetPackedShrLambda() { return mPackedShrLambda; }
 
   private:
     // ID of the party who owns this batch
@@ -215,7 +215,7 @@ namespace dp {
     vec<std::shared_ptr<OutputGate>> mOutputGatesPtrs;
 
     // The packed sharings associated to this batch
-    FF mPackedShrLambda;
+    Shr mPackedShrLambda;
 
     // Network-related
     std::shared_ptr<scl::Network> mNetwork;

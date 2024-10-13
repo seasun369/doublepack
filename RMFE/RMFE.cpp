@@ -22,10 +22,10 @@ RMFE_GR::RMFE_GR(ZZ p_, long s_, long k_, long D_, long n1_, long n2_,
 */
 void RMFE_GR::RMFE_GR_INIT1(){
     if(D*(n1-1)>r1/s){
-        throw invalid_argument("RMFE_GR::RMFE_GR_INIT: Note:D(n-1)<=r/s!");
+        throw invalid_argument("RMFE_GR::RMFE_GR_INIT1: Note:D(n-1)<=r/s!");
     }
-    if(power(p,s)<n1){
-        throw invalid_argument("RMFE_GR::RMFE_GR_INIT: Note:(p,s)<n1 Lenstra Lemma!");
+    if(power(p,s) + 1<n1){
+        throw invalid_argument("RMFE_GR::RMFE_GR_INIT1: Note:(p,s) + 1<n1 Lenstra Lemma!");
     }
     ZZ q1 = power(p,s);
     ZZ q2 = power(p,r1);
@@ -42,13 +42,13 @@ void RMFE_GR::RMFE_GR_INIT1(){
     SetCoeff(f,0,-1);
 
     ZZ_pX g_;
-    HenselLift(g_,f,F,p,k-1);
+    if(k > 1)
+        HenselLift(g_,f,F,p,k-1);
+    else g_ = F;
 
     fillIrred(g_,PrimitiveIrred1);
     ZZ_p::init(q3);
     ZZ_pE::init(g_);
-
-    //cout << "Current modulus polynomial: " << ZZ_pE::modulus() << endl;
 
     ZZ_pX H;
     SetCoeff(H,1,1);
@@ -62,7 +62,14 @@ void RMFE_GR::RMFE_GR_INIT1(){
         v1.append(ZZ_pE(0));
     }
 
-    else{
+    else if(IsZero(a) && n1 == 2){
+        v1.append(ZZ_pE(1));
+    }
+    else if(power(p,s) + 1 == n1){
+        v1.append(ZZ_pE(0));
+    }
+    else
+        {
         ZZ_pE a_tmp = a;
         for(int i=1;i<n1;i++){
             a_tmp = a_tmp * a;
@@ -79,10 +86,10 @@ void RMFE_GR::RMFE_GR_INIT1(){
 */
 void RMFE_GR::RMFE_GR_INIT2(){
     if(D*(n2-1)>r2/r1){
-        throw invalid_argument("RMFE_GR::RMFE_GR_INIT: Note:D(n-1)<=r/s!");
+        throw invalid_argument("RMFE_GR::RMFE_GR_INIT2: Note:D(n-1)<=r/s!");
     }
-    if(power(p,r1)<n2){
-        throw invalid_argument("RMFE_GR::RMFE_GR_INIT: Note:(p,s)<n1 Lenstra Lemma!");
+    if(power(p,r1) + 1 < n2){
+        throw invalid_argument("RMFE_GR::RMFE_GR_INIT2: Note:power(p,s)<n1 Lenstra Lemma!");
     }
     ZZ q1 = power(p,r1);
     ZZ q2 = power(p,r2);
@@ -135,14 +142,15 @@ void RMFE_GR::RMFE_GR_INIT2(){
 */
 void RMFE_GR::RMFE_GR_INIT2_cache(){
     if(D*(n2-1)>r2/r1){
-        throw invalid_argument("RMFE_GR::RMFE_GR_INIT: Note:D(n-1)<=r/s!");
+        throw invalid_argument("RMFE_GR::RMFE_GR_INIT2: Note:D(n-1)<=r/s!");
     }
-    if(power(p,r1)<n2){
-        throw invalid_argument("RMFE_GR::RMFE_GR_INIT: Note:(p,s)<n1 Lenstra Lemma!");
+    if(power(p,r1) + 1 < n2){
+        throw invalid_argument("RMFE_GR::RMFE_GR_INIT2: Note:power(p,s)<n2 Lenstra Lemma!");
     }
     ZZ q1 = power(p,r1);
     ZZ q2 = power(p,r2);
     ZZ q3 = power(p,k);
+    ZZ q5 = power(p,k-1);
     long q4;
     conv(q4,q1-ZZ(1));
 
@@ -158,11 +166,13 @@ void RMFE_GR::RMFE_GR_INIT2_cache(){
     fillIrred(g_,PrimitiveIrred2);
     ZZ_pE::init(g_);
 
+
     ZZ_pX H;
     SetCoeff(H,1,1);
-    ZZ_pE a;
-    conv(a,H);
+    ZZ_pE aa;
+    conv(aa,H);
 
+    ZZ_pE a = power(aa,q5);
 
     vec_ZZ_pE v1;
     v1.append(a);
@@ -171,6 +181,22 @@ void RMFE_GR::RMFE_GR_INIT2_cache(){
         v1.append(ZZ_pE(0));
     }
 
+    else if(power(p,r1) + 1 == n2){
+        ZZ_pE a_tmp = a;
+        for(int i=1;i<n2-2;i++){
+            a_tmp = a_tmp * a;
+            v1.append(a_tmp);
+        }
+        v1.append(ZZ_pE(0));
+    }
+    else if(power(p,r1) == n2){
+        ZZ_pE a_tmp = a;
+        for(int i=1;i<n2-1;i++){
+            a_tmp = a_tmp * a;
+            v1.append(a_tmp);
+        }
+        v1.append(ZZ_pE(0));
+    }
     else{
         ZZ_pE a_tmp = a;
         for(int i=1;i<n2;i++){
@@ -233,14 +259,52 @@ vector<long> RMFE_GR::RMFE_GR_PHI1(vector<long>& input){
     ZZ_pX F = long2ZZpX(PrimitiveIrred1);
     ZZ_pE::init(F);
 
+    ZZ_pEX h;
+    if(power(p,s) + 1 == n1){
+        // interpolation points
+        vec_ZZ_pE v1 ;
+        v1.SetLength(n1 - 1);
 
-    // interpolation points
-    vec_ZZ_pE v1 ;
-    v1.SetLength(n1);
+        for(int i = 0; i < n1 - 1; i++){
+            vector<long> coeff(Interpolation1.begin()+i*s, Interpolation1.begin()+i*s+s);
+            v1[i] = long2ZZpE(coeff);
+        }
+        // input points
 
-    for(int i = 0; i < n1; i++){
-        vector<long> coeff(Interpolation1.begin()+i*s, Interpolation1.begin()+i*s+s);
-        v1[i] = long2ZZpE(coeff);
+        vec_ZZ_pE v2, v2_;
+        for (int i = 0; i < n1; i++){
+            ZZ_pX f;
+            ZZ_pE g;
+            for (int j = 0; j < s; j++){
+                SetCoeff(f,j,input[i*s+j]);
+            }
+            conv(g,f);
+            v2_.append(g);
+        }
+
+        for(int i = 0; i < n1 - 1; i++){
+            v2.append(v2_[i]);
+        }
+
+        ZZ_pEX tmp;
+
+        SetCoeff(tmp,n1-1,v2_[n1-1]);
+
+        for(int i = 0; i < n1 - 1; i++){
+            v2[i] = v2[i] - eval(tmp,v1[i]);
+        }
+        interpolate_for_GR(h,v1,v2,p,k,s);
+        SetCoeff(h,n1-1,v2_[n1-1]);
+
+    }
+    else{
+        // interpolation points
+        vec_ZZ_pE v1 ;
+        v1.SetLength(n1);
+
+        for(int i = 0; i < n1; i++){
+            vector<long> coeff(Interpolation1.begin()+i*s, Interpolation1.begin()+i*s+s);
+            v1[i] = long2ZZpE(coeff);
     }
 
     // input points
@@ -255,9 +319,9 @@ vector<long> RMFE_GR::RMFE_GR_PHI1(vector<long>& input){
         conv(g,f);
         v2.append(g);
     }
-    ZZ_pEX h;
-    interpolate_for_GR(h,v1,v2,p,k,s);
 
+    interpolate_for_GR(h,v1,v2,p,k,s);
+    }
 
     vector<long> V;
     ZZpEX2long(h,V,s);
@@ -278,42 +342,77 @@ void RMFE_GR::RMFE_GR_PHI2(vector<long>& input){
     ZZ_p::init(q3);
     ZZ_pX F = long2ZZpX(PrimitiveIrred2);
     ZZ_pE::init(F);
-    
 
-    //interpolation points
-    vec_ZZ_pE v1 ;
-    v1.SetLength(n2);
-    for(int i = 0; i < n2; i++){
-        vector<long> coeff(Interpolation2.begin()+i*r1, Interpolation2.begin()+i*r1+r1);
-        v1[i] = long2ZZpE(coeff);
-    }
-
-    // input points
-
-    vec_ZZ_pE v2;
-    for (int i = 0; i < n2; i++){
-        ZZ_pX f;
-        ZZ_pE g;
-        for (int j = 0; j < r1; j++){
-            SetCoeff(f,j,input[i*r1+j]);
-        }
-        conv(g,f);
-        v2.append(g);
-    }
-    //print(input);
     ZZ_pEX h;
-    interpolate_for_GR(h,v1,v2,p,k,r1);
-    //print(input);
+    if(power(p,r1) + 1 == n2){
+
+        //interpolation points
+        vec_ZZ_pE v1 ;
+        v1.SetLength(n2 -1);
+        for(int i = 0; i < n2 - 1; i++){
+            vector<long> coeff(Interpolation2.begin()+i*r1, Interpolation2.begin()+i*r1+r1);
+            v1[i] = long2ZZpE(coeff);
+        }
+
+        // input points
+
+        vec_ZZ_pE v2_,v2;
+        for (int i = 0; i < n2; i++){
+            ZZ_pX f;
+            ZZ_pE g;
+            for (int j = 0; j < r1; j++){
+                SetCoeff(f,j,input[i*r1+j]);
+            }
+            conv(g,f);
+            v2_.append(g);
+        }
+        for(int i = 0; i < n2 - 1; i++){
+            v2.append(v2_[i]);
+        }
+
+        ZZ_pEX tmp;
+
+        SetCoeff(tmp,n2-1,v2_[n2-1]);
+
+        for(int i = 0; i < n2 - 1; i++){
+            v2[i] = v2[i] - eval(tmp,v1[i]);
+        }
+        interpolate_for_GR(h,v1,v2,p,k,r1);
+        SetCoeff(h,n2-1,v2_[n2-1]);
+    }
+    else{
+        //interpolation points
+        vec_ZZ_pE v1 ;
+        v1.SetLength(n2);
+        for(int i = 0; i < n2; i++){
+            vector<long> coeff(Interpolation2.begin()+i*r1, Interpolation2.begin()+i*r1+r1);
+            v1[i] = long2ZZpE(coeff);
+        }
+
+        // input points
+
+        vec_ZZ_pE v2;
+        for (int i = 0; i < n2; i++){
+            ZZ_pX f;
+            ZZ_pE g;
+            for (int j = 0; j < r1; j++){
+                SetCoeff(f,j,input[i*r1+j]);
+            }
+            conv(g,f);
+            v2.append(g);
+        }
+
+        interpolate_for_GR(h,v1,v2,p,k,r1);
+    }
 
     vector<long> h_long;
-    ZZpEX2long(h,h_long,r1);
-    // ZZ_pX FF;
-    //print(input);
-    // SetCoeff(FF,42,1);
-    // SetCoeff(FF,7,1);
-    // SetCoeff(FF,0,1);
+    if(deg(h) >= 1)
+        ZZpEX2long(h,h_long,r1);
+    else{
+        for(int i=0;i<r1 * n2;i++)
+            h_long.push_back(0);
+    }
 
-    // ZZ_pE::init(FF);
 
     int r = r2/r1;
 
@@ -413,6 +512,30 @@ vector<long> RMFE_GR::RMFE_GR_PSI(vector<long> Input){
     vector<long> m;
     VeczzpE2Veclong(v3, m, s);
     return m;
+
+}
+
+void RMFE_GR::get_phi_kernel(vec_ZZ_pE& vec){
+    ZZ_pX poly;
+    SetCoeff(poly, 0, 0);  // 常数项 0
+    SetCoeff(poly, 1, -1); // x^1 项系数 -1
+    SetCoeff(poly, 2, 1);  // x^2 项系数 1
+
+    // 将多项式转换为ZZ_pE类型
+    ZZ_pE f = conv<ZZ_pE>(poly);
+
+    for(int i =0; i<10; i++){
+
+    ZZ_pX randomPoly;
+    random(randomPoly, r2-2);  // randomPoly的次数上限为d-1
+
+    // 将其转换为ZZ_pE类型
+    ZZ_pE g = conv<ZZ_pE>(randomPoly);
+
+    vec.append(f*g);
+
+    }
+
 
 }
 

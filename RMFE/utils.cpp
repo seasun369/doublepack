@@ -387,7 +387,12 @@ void FindPrimitivePoly(ZZ_pX& g, ZZ p, long n){
     interpolate over galois ring GR(p^l,s) satisfying f(a) = b for all a
 */
 void interpolate_for_GR(ZZ_pEX& f, const vec_ZZ_pE& a, const vec_ZZ_pE& b, ZZ p, long l, long s)
-{
+{   
+    if( l == 1)
+     {  
+        interpolate(f,a,b);
+        return ;
+     }
    long m = a.length();
    if (b.length() != m) LogicError("interpolate: vector length mismatch");
 
@@ -405,6 +410,7 @@ void interpolate_for_GR(ZZ_pEX& f, const vec_ZZ_pE& a, const vec_ZZ_pE& b, ZZ p,
    res.SetLength(m);
 
    for (k = 0; k < m; k++) {
+
       const ZZ_pE& aa = a[k];
 
       set(t1);

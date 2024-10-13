@@ -5,6 +5,7 @@
 #include "RMFE.h"
 #include "scl.h"
 #include "gr.h"
+#include "pss.h"
 namespace dp {
   //Galois ring
   ZZ gr_prime = conv<ZZ>(2);  //p 

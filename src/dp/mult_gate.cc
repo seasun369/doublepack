@@ -10,8 +10,8 @@ namespace dp {
       Vec mu_beta;
       // Here is where the permutation happens!
       for (auto gate : mMultGatesPtrs) {
-	mu_alpha.Emplace(gate->GetLeft()->GetMu());
-	mu_beta.Emplace(gate->GetRight()->GetMu());
+	      mu_alpha.emplace_back(gate->GetLeft()->GetMu());
+	      mu_beta.emplace_back(gate->GetRight()->GetMu());
       }
       
       // 2. P1 generates shares of mu_A and mu_B
@@ -25,8 +25,8 @@ namespace dp {
       // 3. P1 sends the shares
 
       for (std::size_t i = 0; i < mParties; ++i) {
-	mNetwork->Party(i)->Send(shares_A[i]);
-	mNetwork->Party(i)->Send(shares_B[i]);
+	      mNetwork->Party(i)->Send(shares_A[i]);
+	      mNetwork->Party(i)->Send(shares_B[i]);
       }
     }
   }
@@ -46,7 +46,7 @@ namespace dp {
       // Compute share
       FF shr_mu_C;
       shr_mu_C = mPackedShrMuB * mPackedShrLambdaA + mPackedShrMuA * mPackedShrLambdaB + \
-	mPackedShrMuA * mPackedShrMuB + mPackedShrDeltaC;
+	    mPackedShrMuA * mPackedShrMuB + mPackedShrDeltaC;
 
       // Send to P1
       mNetwork->Party(0)->Send(shr_mu_C); 

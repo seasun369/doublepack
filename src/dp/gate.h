@@ -34,13 +34,13 @@ namespace dp {
     virtual FF GetIndvShrLambda() = 0; 
 
     // Setting DN07 share
-    void SetDn07Share(FF share) {
-      mDn07Share = share;
-      mDn07Set = true;
-    }
+    //void SetDn07Share(FF share) {
+    //  mDn07Share = share;
+    //  mDn07Set = true;
+    //}
 
     // To get share when run with DN07
-    virtual FF GetDn07Share() = 0; 
+    //virtual FF GetDn07Share() = 0; 
 
     // To get lambda when having fake preprocessing
     virtual FF GetDummyLambda() = 0; 
@@ -100,40 +100,40 @@ namespace dp {
 
     FF GetMu() {
       if ( !mLearned ) {
-	mMu = mLeft->GetMu() + mRight->GetMu();
-	mLearned = true;
+	      mMu = mLeft->GetMu() + mRight->GetMu();
+	      mLearned = true;
       }
       return mMu;
     }
 
     FF GetClear() {
       if ( !mEvaluated ) {
-	mClear = mLeft->GetClear() + mRight->GetClear();
-	mEvaluated = true;
+	      mClear = mLeft->GetClear() + mRight->GetClear();
+	      mEvaluated = true;
       }
       return mClear;
     }
 
     FF GetIndvShrLambda() {
       if ( !mIndvShrLambdaCSet ) {
-	mIndvShrLambdaC = mLeft->GetIndvShrLambda() + mRight->GetIndvShrLambda();
-	mIndvShrLambdaCSet = true;
+	      mIndvShrLambdaC = mLeft->GetIndvShrLambda() + mRight->GetIndvShrLambda();
+	      mIndvShrLambdaCSet = true;
       }
       return mIndvShrLambdaC;
     }    
 
-    FF GetDn07Share() {
-      if ( !mDn07Set ) {
-	mDn07Share = mLeft->GetDn07Share() + mRight->GetDn07Share();
-	mDn07Set = true;
-      }
-      return mDn07Share;
-    }    
+//    FF GetDn07Share() {
+//      if ( !mDn07Set ) {
+//	mDn07Share = mLeft->GetDn07Share() + mRight->GetDn07Share();
+//	mDn07Set = true;
+//      }
+//     return mDn07Share;
+//    }    
 
     FF GetDummyLambda() {
       if ( !mLambdaSet ) {
-	mLambda = mLeft->GetDummyLambda() + mRight->GetDummyLambda();
-	mLambdaSet = true;
+	      mLambda = mLeft->GetDummyLambda() + mRight->GetDummyLambda();
+	      mLambdaSet = true;
       }
       return mLambda;
     }    

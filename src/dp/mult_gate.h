@@ -17,7 +17,7 @@ namespace dp {
 
     FF GetMu() {
       if ( !mLearned ) {
-	throw std::invalid_argument("Run multiplication protocol first");
+	      throw std::invalid_argument("Run multiplication protocol first");
       }
       return mMu;
     };
@@ -29,7 +29,7 @@ namespace dp {
 
     FF GetDummyLambda() {
       if ( !mLambdaSet ) {
-	throw std::invalid_argument("Lambda is not set in this multiplication gate");
+	      throw std::invalid_argument("Lambda is not set in this multiplication gate");
       }
       return mLambda;
     };
@@ -41,20 +41,20 @@ namespace dp {
 
     FF GetIndvShrLambda() {
       if ( !mIndvShrLambdaCSet )
-	throw std::invalid_argument("IndvShrLambda is not set in this multiplication gate");
+	      throw std::invalid_argument("IndvShrLambda is not set in this multiplication gate");
       return mIndvShrLambdaC;
     }
 
     FF GetDn07Share() {
       if ( !mDn07Set )
-	throw std::invalid_argument("Dn07 shares is not set in this multiplication gate");
+	      throw std::invalid_argument("Dn07 shares is not set in this multiplication gate");
       return mDn07Share;
     }
 
     FF GetClear() {
       if ( !mEvaluated ) {
-	mClear = mLeft->GetClear() * mRight->GetClear();
-	mEvaluated = true;
+	      mClear = mLeft->GetClear() * mRight->GetClear();
+	      mEvaluated = true;
       }
       return mClear;
     }
@@ -90,14 +90,14 @@ namespace dp {
     // the batch_size
     void Append(std::shared_ptr<MultGate> mult_gate) {
       if ( mMultGatesPtrs.size() == mBatchSize )
-	throw std::invalid_argument("Trying to batch more than batch_size gates");
+	      throw std::invalid_argument("Trying to batch more than batch_size gates");
       mMultGatesPtrs.emplace_back(mult_gate); };
 
     // For testing purposes: sets the required preprocessing for this
     // batch to be just constant shares
     void _DummyPrep(FF lambda_A, FF lambda_B, FF lambda_C) {
       if ( mMultGatesPtrs.size() != mBatchSize )
-	throw std::invalid_argument("The number of mult gates does not match the batch size");
+	      throw std::invalid_argument("The number of mult gates does not match the batch size");
 
       mPackedShrLambdaA = lambda_A;
       mPackedShrLambdaB = lambda_B;
@@ -115,14 +115,14 @@ namespace dp {
       Vec delta_C;
 
       for (std::size_t i = 0; i < mBatchSize; i++) {
-	auto l_A = mMultGatesPtrs[i]->GetLeft()->GetDummyLambda();
-	auto l_B = mMultGatesPtrs[i]->GetRight()->GetDummyLambda();
-	auto l_C = mMultGatesPtrs[i]->GetDummyLambda();
-	auto d_C = l_A * l_B - l_C;
+	      auto l_A = mMultGatesPtrs[i]->GetLeft()->GetDummyLambda();
+	      auto l_B = mMultGatesPtrs[i]->GetRight()->GetDummyLambda();
+	      auto l_C = mMultGatesPtrs[i]->GetDummyLambda();
+	      auto d_C = l_A * l_B - l_C;
 
-	lambda_A.Emplace(l_A);
-	lambda_B.Emplace(l_B);
-	delta_C.Emplace(d_C);
+	      lambda_A.emplace_back(l_A);
+	      lambda_B.emplace_back(l_B);
+	      delta_C.emplace_back(d_C);
       }
       
       // Using deg = BatchSize-1 ensures there's no randomness involved
@@ -181,7 +181,7 @@ namespace dp {
       P1Receives();
     }
 
-    void SetPreprocessing(FF shr_lambda_A, FF shr_lambda_B, FF shr_delta_C) {
+    void SetPreprocessing(Shr shr_lambda_A, Shr shr_lambda_B, Shr shr_delta_C) {
       mPackedShrLambdaA = shr_lambda_A;
       mPackedShrLambdaB = shr_lambda_B;
       mPackedShrDeltaC = shr_delta_C;
@@ -195,9 +195,9 @@ namespace dp {
     vec<std::shared_ptr<MultGate>> mMultGatesPtrs;
 
     // The packed sharings associated to this batch
-    FF mPackedShrLambdaA;
-    FF mPackedShrLambdaB;
-    FF mPackedShrDeltaC;
+    Shr mPackedShrLambdaA;
+    Shr mPackedShrLambdaB;
+    Shr mPackedShrDeltaC;
 
     // Network-related
     std::shared_ptr<scl::Network> mNetwork;
@@ -224,11 +224,11 @@ namespace dp {
     void Append(std::shared_ptr<MultGate> mult_gate) {
       auto current_batch = mBatches.back(); // accessing last elt
       if ( current_batch->HasRoom() ) {
-	current_batch->Append(mult_gate);
+	      current_batch->Append(mult_gate);
       } else {
-	auto new_batch = std::make_shared<MultBatch>(mBatchSize);
-	new_batch->Append(mult_gate);
-	mBatches.emplace_back(new_batch);
+	      auto new_batch = std::make_shared<MultBatch>(mBatchSize);
+	      new_batch->Append(mult_gate);
+	      mBatches.emplace_back(new_batch);
       }
     }
 
@@ -245,7 +245,7 @@ namespace dp {
 
       auto last_batch = mBatches.back(); // accessing last elt
       while ( last_batch->HasRoom() ) {
-	last_batch->Append(padding_gate);
+	      last_batch->Append(padding_gate);
       } 
       // assert(last_batch->HasRoom() == false); // PASSES
     }

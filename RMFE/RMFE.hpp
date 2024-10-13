@@ -31,7 +31,7 @@ using namespace NTL;
 
 
 class RMFE_GR{
-protected:
+public:
 
     ZZ p;
     long s;
@@ -47,8 +47,6 @@ protected:
 
     vector<long> input;
     vector<long> output;
-
-public:
 
     vector<long> Interpolation1;
     vector<long> Interpolation2;
@@ -71,6 +69,8 @@ public:
     vector<long> RMFE_GR_PSI(vector<long> Input);
 
     vector<long> get_result(){ return this->output; }
+
+    void get_phi_kernel(vec_ZZ_pE& vec);
 
 };
 
