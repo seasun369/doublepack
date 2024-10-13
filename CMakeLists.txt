@@ -34,7 +34,7 @@ set(DP_SOURCE_FILES
     #src/dp/circuits/offline.cc  
   
     #src/dp/correlator.cc  
-    #src/dp/fi_prep.cc  
+    src/dp/fi_prep.cc  
 )
 
 set(TEST_SOURCE_FILES
@@ -42,6 +42,7 @@ set(TEST_SOURCE_FILES
     test/pss_test.cc
     test/GRmult_test.cc
     test/RMFE_test.cc
+    test/fi_prep_test.cc
 )
 
 add_subdirectory( secure-computation-library )
@@ -63,4 +64,3 @@ target_include_directories(${TEST_EXECUTABLE} PUBLIC
     "${CMAKE_SOURCE_DIR}/src")
 set( libscl "${CMAKE_SOURCE_DIR}/secure-computation-library/build/libscl.so.0.3" )
 target_link_libraries( ${TEST_EXECUTABLE} Catch2::Catch2 pthread scl ${NTL_LIBRARY} ${GMP_LIBRARY} ${M_LIBRARY} )
-

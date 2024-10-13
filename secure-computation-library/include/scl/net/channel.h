@@ -30,6 +30,8 @@
 #include "scl/math/mat.h"
 #include "scl/math/vec.h"
 #include "scl/net/config.h"
+#include <NTL/ZZ_pE.h>
+#include <sstream>
 
 namespace scl {
 
@@ -216,6 +218,38 @@ class Channel {
     auto buf = std::make_unique<unsigned char[]>(n);
     Recv(_SCL_C(buf.get()), n);
     mat = Mat<T>::Read(rows, cols, _SCL_CC(buf.get()));
+  }
+
+  // 序列化 ZZ_pE
+  inline std::vector<unsigned char> serializeZZ_pE(const NTL::ZZ_pE& value) {
+    std::ostringstream oss;
+    oss << value;
+    std::string str = oss.str();
+    return std::vector<unsigned char>(str.begin(), str.end());
+  }
+
+  // 反序列化 ZZ_pE
+  inline NTL::ZZ_pE deserializeZZ_pE(const std::vector<unsigned char>& buffer) {
+    std::string str(buffer.begin(), buffer.end());
+    std::istringstream iss(str);
+    NTL::ZZ_pE value;
+    iss >> value;
+    return value;
+  }
+
+  // 为 NTL::ZZ_pE 类型添加专门的 Send 和 Recv 函数
+  void Send(const NTL::ZZ_pE& src) {
+    std::vector<unsigned char> buffer = serializeZZ_pE(src);
+    Send(static_cast<std::uint32_t>(buffer.size()));  // 先发送大小
+    Send(buffer.data(), buffer.size());  // 再发送数据
+  }
+
+  void Recv(NTL::ZZ_pE& dst) {
+    std::uint32_t size;
+    Recv(size);  // 先接收大小
+    std::vector<unsigned char> buffer(size);
+    Recv(buffer.data(), size);  // 再接收数据
+    dst = deserializeZZ_pE(buffer);
   }
 
  private:
