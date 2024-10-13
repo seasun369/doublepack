@@ -252,6 +252,39 @@ class Channel {
     dst = deserializeZZ_pE(buffer);
   }
 
+  // 序列化 ZZ_p
+  inline std::vector<unsigned char> serializeZZ_p(const NTL::ZZ_p& value) {
+    std::ostringstream oss;
+    oss << value;
+    std::string str = oss.str();
+    return std::vector<unsigned char>(str.begin(), str.end());
+  }
+
+  // 反序列化 ZZ_p
+  inline NTL::ZZ_p deserializeZZ_p(const std::vector<unsigned char>& buffer) {
+    std::string str(buffer.begin(), buffer.end());
+    std::istringstream iss(str);
+    NTL::ZZ_p value;
+    iss >> value;
+    return value;
+  }
+
+  // 为 NTL::ZZ_p 类型添加专门的 Send 函数
+  void Send(const NTL::ZZ_p& src) {
+    std::vector<unsigned char> buffer = serializeZZ_p(src);
+    Send(static_cast<std::uint32_t>(buffer.size()));  // 先发送大小
+    Send(buffer.data(), buffer.size());  // 再发送数据
+  }
+
+  // 为 NTL::ZZ_p 类型添加专门的 Recv 函数
+  void Recv(NTL::ZZ_p& dst) {
+    std::uint32_t size;
+    Recv(size);  // 先接收大小
+    std::vector<unsigned char> buffer(size);
+    Recv(buffer.data(), size);  // 再接收数据
+    dst = deserializeZZ_p(buffer);
+  }
+
  private:
   std::uint32_t RecvSize() {
     std::uint32_t size;
