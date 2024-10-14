@@ -48,6 +48,12 @@ void gr::gr_init_basic_var(){
             SetCoeff(Fps_poly, 8, conv<ZZ_p>(1)); 
             SetCoeff(Fps_poly, 10, conv<ZZ_p>(1)); 
         }
+        else if(r==20)
+        {
+            SetCoeff(Fps_poly, 0, conv<ZZ_p>(1));
+            SetCoeff(Fps_poly, 8, conv<ZZ_p>(1));
+            SetCoeff(Fps_poly, 20, conv<ZZ_p>(1));
+        }
     }
     /*else
     {
