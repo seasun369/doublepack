@@ -65,8 +65,8 @@ namespace dp {
     }
 
     // Generates dummy F.I. preprocessing
-    void GenIndShrsDummy(FF lambda) {
-      mIndShrs = std::vector<FF>(mNIndShrs, lambda);
+    void GenIndShrsDummy(Shr lambda) {
+      mIndShrs = std::vector<Shr>(mNIndShrs, lambda);
     }
     void GenMultBatchDummy() {
       mMultBatchFIPrep = std::vector<MultBatchFIPrep>(mNMultBatches, MultBatchFIPrep());      
@@ -75,14 +75,14 @@ namespace dp {
       mIOBatchFIPrep = std::vector<IOBatchFIPrep>(mNInOutBatches, IOBatchFIPrep());
     }
 
-    void GenPrepDummy(FF lambda) {
+    void GenPrepDummy(Shr lambda) {
       GenIndShrsDummy(lambda);
       GenMultBatchDummy();
       GenIOBatchDummy();
     }
 
     void GenPrepDummy() {
-      GenPrepDummy(FF(0));
+      GenPrepDummy(Shr(0));
     }
 
     void SetNetwork(std::shared_ptr<scl::Network> network, std::size_t id) {
@@ -215,7 +215,7 @@ namespace dp {
     void PrecomputeVandermonde() {
       mVandermonde.reserve(mParties);
       for (std::size_t i = 0; i < mParties; i++) {
-	      mVandermonde.emplace_back(std::vector<FF>());
+	      mVandermonde.emplace_back(std::vector<Shr>());
 	      mVandermonde[i].reserve(mThreshold + 1);
 	      Shr entry(1);
 	      for (std::size_t j = 0; j < mThreshold + 1; ++j) {
@@ -227,7 +227,7 @@ namespace dp {
     }
 
     // Maps
-    std::map<std::shared_ptr<Gate>, FF> mMapIndShrs;
+    std::map<std::shared_ptr<Gate>, Shr> mMapIndShrs;
     std::map<std::shared_ptr<MultBatch>, MultBatchFIPrep> mMapMultBatch;
     std::map<std::shared_ptr<InputBatch>, IOBatchFIPrep> mMapInputBatch;
     std::map<std::shared_ptr<OutputBatch>, IOBatchFIPrep> mMapOutputBatch;
@@ -264,7 +264,7 @@ namespace dp {
     // SHARINGS
 
     // Individual sharings
-    std::vector<FF> mIndShrs;
+    std::vector<Shr> mIndShrs;
 
     // Multiplication batches
     std::vector<MultBatchFIPrep> mMultBatchFIPrep;
