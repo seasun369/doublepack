@@ -515,7 +515,7 @@ vector<long> RMFE_GR::RMFE_GR_PSI(vector<long> Input){
 
 }
 
-void RMFE_GR::get_phi_kernel(vec_ZZ_pE& vec){
+void RMFE_GR::get_phi_kernel(vec_ZZ_pE& vec, long num){
     ZZ_pX poly;
     SetCoeff(poly, 0, 0);  // 常数项 0
     SetCoeff(poly, 1, -1); // x^1 项系数 -1
@@ -524,7 +524,7 @@ void RMFE_GR::get_phi_kernel(vec_ZZ_pE& vec){
     // 将多项式转换为ZZ_pE类型
     ZZ_pE f = conv<ZZ_pE>(poly);
 
-    for(int i =0; i<10; i++){
+    for(int i =0; i<num; i++){
 
     ZZ_pX randomPoly;
     random(randomPoly, r2-2);  // randomPoly的次数上限为d-1

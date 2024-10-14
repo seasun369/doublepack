@@ -114,6 +114,8 @@ namespace dp {
     // Inputs, Outputs, 3xMult
     void GenZeroPartiesSend();
     void GenZeroPartiesReceive();
+    void GenZero2PartiesSend();
+    void GenZero2PartiesReceive();
 
     // Zero shares for taking a product
     void GenZeroForProdPartiesSend();

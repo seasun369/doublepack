@@ -70,7 +70,7 @@ public:
 
     vector<long> get_result(){ return this->output; }
 
-    void get_phi_kernel(vec_ZZ_pE& vec);
+    void get_phi_kernel(vec_ZZ_pE& vec, long num);
 
 };
 

@@ -158,7 +158,7 @@ namespace dp {
     // }
 
     // The correlator is populated with dummy F.I. preprocessing
-    void GenIndShrsDummy(FF lambda) {
+    void GenIndShrsDummy(Shr lambda) {
       mCorrelator.GenIndShrsDummy(lambda);
     }
     void GenMultBatchDummy() {
@@ -168,7 +168,7 @@ namespace dp {
       mCorrelator.GenIOBatchDummy();
     }
 
-    void PopulateDummyCorrelator(FF lambda) {
+    void PopulateDummyCorrelator(Shr lambda) {
       mCorrelator.GenPrepDummy(lambda);
     }
 
@@ -188,8 +188,14 @@ namespace dp {
     void GenUnpackedShrPartiesSend() { mCorrelator.GenUnpackedShrPartiesSend(); }
     void GenUnpackedShrPartiesReceive() { mCorrelator.GenUnpackedShrPartiesReceive(); }
 
+    void GenUnpackedMaskPartiesSend() { mCorrelator.GenUnpackedMaskPartiesSend(); }
+    void GenUnpackedMaskPartiesReceive() { mCorrelator.GenUnpackedMaskPartiesReceive(); }
+
     void GenZeroPartiesSend() { mCorrelator.GenZeroPartiesSend(); }
     void GenZeroPartiesReceive() { mCorrelator.GenZeroPartiesReceive(); }
+
+    void GenZero2PartiesSend() { mCorrelator.GenZero2PartiesSend(); }
+    void GenZero2PartiesReceive() { mCorrelator.GenZero2PartiesReceive(); }
 
     void GenZeroForProdPartiesSend() { mCorrelator.GenZeroForProdPartiesSend(); }
     void GenZeroForProdPartiesReceive() { mCorrelator.GenZeroForProdPartiesReceive(); }
@@ -197,14 +203,18 @@ namespace dp {
     void FIPrepSend() {
       GenIndShrsPartiesSend();
       GenUnpackedShrPartiesSend();
+      GenUnpackedMaskPartiesSend();
       GenZeroPartiesSend();
+      GenZero2PartiesSend();
       GenZeroForProdPartiesSend();      
     }
 
     void FIPrepRecv() {
       GenIndShrsPartiesReceive();
       GenUnpackedShrPartiesReceive();
+      GenUnpackedMaskPartiesReceive();
       GenZeroPartiesReceive();
+      GenZero2PartiesSend();
       GenZeroForProdPartiesReceive();      
     }
 

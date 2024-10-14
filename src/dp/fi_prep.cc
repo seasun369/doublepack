@@ -67,7 +67,9 @@ namespace dp {
       }
     }
   }
-
+/*
+  generate Beaver triple
+*/
   void Correlator::GenUnpackedShrPartiesSend() {
     std::size_t degree = mThreshold;
     std::size_t n_amount = 3*mNMultBatches; // 2 for the two factors, 1 for the multiplication
@@ -151,6 +153,9 @@ namespace dp {
     }
   }
 
+/*
+  generate r and phi(psi(r))
+*/
   void Correlator::GenUnpackedMaskPartiesSend() {
     std::size_t degree = mThreshold;
     std::size_t n_amount = 3*mNMultBatches; // 2 for the two factors, 1 for the multiplication
@@ -159,15 +164,19 @@ namespace dp {
     for ( std::size_t pack_idx = 0; pack_idx < mBatch_m; pack_idx++ ) {
       for ( std::size_t block = 0; block < n_blocks; block++ ) {
 	      // 1 sample secret and shares
-	      vector<long> aa(mBatch_l, 0);
-        for(std::size_t i =0; i<mBatch_l; i++){
-          FF a = random_ZZ_p();
-          aa.emplace_back(conv<long>(a));
-        }
-        rmfe.set_input(aa);
-        rmfe.RMFE_GR_PHI();
-        vector<long> result1 = rmfe.get_result();
-	      Shr secret1 = long2ZZpE(result1);
+	      //vector<long> aa(mBatch_l, 0);
+        //for(std::size_t i =0; i<mBatch_l; i++){
+        //  FF a = random_ZZ_p();
+        //  aa.emplace_back(conv<long>(a));
+        //}
+        //Shr a = random_ZZ_pE();
+
+        //rmfe.set_input(aa);
+        //rmfe.RMFE_GR_PHI();
+        //vector<long> result1 = rmfe.get_result();
+	      Shr secret1 =  random_ZZ_pE();
+        vector<long> result1;
+        ZzpE2Veclong(secret1, result1, s);
         rmfe.RMFE_GR_PSI(result1);
         rmfe.RMFE_GR_PHI();
         vector<long> result2 = rmfe.get_result();
@@ -236,18 +245,18 @@ namespace dp {
       }
     }
     // Create Mult-related data
-    for ( std::size_t i = 0; i < mNMultBatches; i++ ) {
-      MultBatchFIPrep data(Shr(0));
-      for ( std::size_t pack_idx = 0; pack_idx < mBatchSize; pack_idx++ ) {
-	      data.mShrA += mSharesOfEi[pack_idx] * mUnpackedShrsA[pack_idx][i];
-	      data.mShrB += mSharesOfEi[pack_idx] * mUnpackedShrsB[pack_idx][i];
-      }
-      mMultBatchFIPrep.emplace_back(data);
-    }
+    //for ( std::size_t i = 0; i < mNMultBatches; i++ ) {
+    //  MultBatchFIPrep data(Shr(0));
+    //  for ( std::size_t pack_idx = 0; pack_idx < mBatchSize; pack_idx++ ) {
+	  //    data.mShrA += mSharesOfEi[pack_idx] * mUnpackedShrsA[pack_idx][i];
+	  //    data.mShrB += mSharesOfEi[pack_idx] * mUnpackedShrsB[pack_idx][i];
+    //  }
+    //  mMultBatchFIPrep.emplace_back(data);
+    //}
   }
 
   // Zero shares. Used for:
-  // Inputs, Outputs, 3xMult
+  // Inputs, Outputs, 3xMult but only [0]
   void Correlator::GenZeroPartiesSend() {
     std::size_t degree = mParties - 1;
     std::size_t n_amount = 3*mNMultBatches + mNInOutBatches;
@@ -295,18 +304,78 @@ namespace dp {
 	      }
 	      if (ctr < mNMultBatches) mMultBatchFIPrep[ctr].mShrO1 = shr; 
 	      if ((mNMultBatches <= ctr) && (ctr < 2*mNMultBatches)) mMultBatchFIPrep[ctr - mNMultBatches].mShrO2 = shr;
-	      if ((2*mNMultBatches <= ctr) && (ctr < 3*mNMultBatches)) mMultBatchFIPrep[ctr - 2*mNMultBatches].mShrO3 = shr;
-	      else {
-	        IOBatchFIPrep tmp;
-	        tmp.mShrO = shr;
-	        mIOBatchFIPrep.emplace_back(tmp);
-	      }
+        //else continue;
+	      //if ((2*mNMultBatches <= ctr) && (ctr < 3*mNMultBatches)) mMultBatchFIPrep[ctr - 2*mNMultBatches].mShrO3 = shr;
+	      //else {
+	      //  IOBatchFIPrep tmp;
+	      //  tmp.mShrO = shr;
+	      //  mIOBatchFIPrep.emplace_back(tmp);   // should be <0>n-1
+	      //}
 	    ctr++;
       }
     }
   }
 
-  //TODO: kernel
+  // Zero shares. Used for:
+  // Inputs, Outputs, 3xMult but for <0>
+  void Correlator::GenZero2PartiesSend() {
+    std::size_t degree = mParties - 1;
+    std::size_t n_amount = 3*mNMultBatches + mNInOutBatches;
+    std::size_t n_blocks = (n_amount + (mThreshold + 1) -1) / (mThreshold + 1);
+    for ( std::size_t block = 0; block < n_blocks; block++ ) {
+      // 1 sample secret and shares
+      vec_ZZ_pE kernel;
+      kernel.SetLength(mBatch_m);
+
+      rmfe.get_phi_kernel(kernel, mBatch_m);
+
+      vec_ZZ_pE secrets;
+      secrets.SetLength(mBatch_m);
+      for(long i=0; i<mBatch_m; i++){
+        secrets[i] = kernel[i]; //should sample from kernel
+      }
+
+      //auto poly = scl::details::EvPolyFromSecretsAndDegree(secrets, degree, mPRG);
+      //auto shares = scl::details::SharesFromEvPoly(poly, mParties);
+      vec_ZZ_pE shares = Scheme_n1.create_shares(secrets);
+	
+      // 2 send shares
+      for ( std::size_t party = 0; party < mParties; party++ ){
+	      mNetwork->Party(party)->Send(shares[party]);
+      }
+    }
+  }
+
+  void Correlator::GenZero2PartiesReceive() {
+    std::size_t n_amount = 3*mNMultBatches + mNInOutBatches;
+    std::size_t ctr(0);
+    std::size_t n_blocks = (n_amount + (mThreshold + 1) -1) / (mThreshold + 1);
+    for ( std::size_t block = 0; block < n_blocks; block++ ) {
+      // 1 receive shares
+      Vec recv_shares;
+      recv_shares.reserve(mParties);
+      for (std::size_t parties = 0; parties < mParties; parties++) {
+	      Shr buffer;
+	      mNetwork->Party(parties)->Recv(buffer);
+	      recv_shares.emplace_back(buffer);
+      }
+      // 2 multiply by Vandermonde
+      for ( std::size_t shr_idx = 0; shr_idx < mThreshold+1; shr_idx++ ){
+	      Shr shr(0);
+	      for ( std::size_t j = 0; j < mParties; j++ ){
+	        shr += mVandermonde[j][shr_idx] * recv_shares[j];
+	      }
+	      if (ctr < mNMultBatches) mMultBatchFIPrep[ctr].mShrO3 = shr; 
+	      if ((mNMultBatches <= ctr) && (ctr < mNMultBatches+mNInOutBatches)) {
+          IOBatchFIPrep tmp;
+	        tmp.mShrO = shr;
+	        mIOBatchFIPrep.emplace_back(tmp);
+        }
+	    ctr++;
+      }
+    }
+  }
+
   void Correlator::GenZeroForProdPartiesSend() {
     std::size_t degree = mParties - 1;
     std::size_t n_amount = mNMultBatches; 
@@ -315,14 +384,16 @@ namespace dp {
     for ( std::size_t pack_idx = 0; pack_idx < mBatch_m; pack_idx++ ) {
       for ( std::size_t block = 0; block < n_blocks; block++ ) {
 	    // 1 sample secret and shares
-	    vec_ZZ_pE secrets;
-      secrets.SetLength(mBatch_m);  // 设置向量长度
+	    vec_ZZ_pE kernel;
+      kernel.SetLength(mBatch_m);
 
-      // 将每个元素初始化为零
-      for (long i = 0; i < mBatch_m; i++) {
-        secrets[i] = ZZ_pE::zero();  // 初始化为全零元素
+      rmfe.get_phi_kernel(kernel, mBatch_m);
+
+      vec_ZZ_pE secrets;
+      secrets.SetLength(mBatch_m);
+      for(long i=0; i<mBatch_m; i++){
+        secrets[i] = kernel[i]; //should sample from kernel
       }
-
 
       //auto poly = scl::details::EvPolyFromSecretsAndDegree(secrets, degree, mPRG);
       //auto shares = scl::details::SharesFromEvPoly(poly, mParties);
@@ -443,7 +514,7 @@ namespace dp {
 	      }
 	       
 	      // 2. Compute shares
-	      Shr shr_prod = recv - mUnpackedShrsMask[pack_idx][batch];
+	      Shr shr_prod = recv - mUnpackedShrsMaskPhiPsi[pack_idx][batch];
 	      shares_prod[pack_idx].emplace_back(shr_prod);
       }
     }
