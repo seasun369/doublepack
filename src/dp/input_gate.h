@@ -11,7 +11,7 @@ namespace dp {
   public:
     InputGate(std::size_t owner_id) : mOwnerID(owner_id) {
       // TODO sample at random, interactively. Get from correlator
-      mIndvShrLambdaC = FF(0);
+      mIndvShrLambdaC = Shr(0);
     }
 
     // Set cleartext inputs, for the case of cleartext evaluation
@@ -41,22 +41,22 @@ namespace dp {
       return mLambda;
     }
 
-    void SetIndvShrLambda(FF indv_shr) {
+    void SetIndvShrLambda(Shr indv_shr) {
       mIndvShrLambdaC = indv_shr;
       mIndvShrLambdaCSet = true;
     }
 
-    FF GetIndvShrLambda() {
+    Shr GetIndvShrLambda() {
       if ( !mIndvShrLambdaCSet )
 	      throw std::invalid_argument("IndvShrLambda is not set in this input gate");
       return mIndvShrLambdaC;
     }
 
-    FF GetDn07Share() {
-      if ( !mDn07Set )
-	      throw std::invalid_argument("Dn07 shares is not set in this input gate");
-      return mDn07Share;
-    }
+    //FF GetDn07Share() {
+    //  if ( !mDn07Set )
+	  //    throw std::invalid_argument("Dn07 shares is not set in this input gate");
+    //  return mDn07Share;
+    //}
     
     FF GetClear() {
       if ( !mEvaluated )
@@ -116,15 +116,17 @@ namespace dp {
 
     FF GetMu() override { return FF(0); }
     FF GetDummyLambda() override { return FF(0); }
-    FF GetIndvShrLambda() override { return FF(0); }
+    Shr GetIndvShrLambda() override { return Shr(0); }
 
   private:
   };
 
   class InputBatch {
   public:
-    InputBatch(std::size_t owner_id, std::size_t batch_size) : mOwnerID(owner_id), mBatchSize(batch_size) {
+    InputBatch(std::size_t owner_id, std::size_t batch_size_l, std::size_t batch_size_m) : mOwnerID(owner_id), mBatchSize_l(batch_size_l),  mBatchSize_m(batch_size_m){
+      mBatchSize = mBatchSize_l*mBatchSize_m;
       mInputGatesPtrs.reserve(mBatchSize); //TODO:should add one layer
+      Scheme_m1 = packed_shamir::scheme(mParties, mBatchSize_m, mBatchSize_m-1,gring);
     };
 
     // Adds a new input_gate to the batch. It cannot add more gates than
@@ -141,13 +143,14 @@ namespace dp {
     void _DummyPrep(FF lambda) {
       if ( mInputGatesPtrs.size() != mBatchSize )
 	      throw std::invalid_argument("The number of input gates does not match the batch size");
-
-      mPackedShrLambda = lambda;
+      Shr lambda_ = conv<Shr>(lambda);
+      mPackedShrLambda = lambda_;
       for (auto input_gate : mInputGatesPtrs) input_gate->_DummyPrep(lambda);
     }
     void _DummyPrep() {
       _DummyPrep(FF(0));
     }
+
 
     std::size_t GetOwner() {
       return mOwnerID;
@@ -156,15 +159,28 @@ namespace dp {
                                             
     // Generates the preprocessing from the lambdas of the inputs
     void PrepFromDummyLambdas() {
-      Vec lambda;//TODO:should be vector<FF>,length = ml and do phi^prime
+      vector<FF> lambda;//TODO:dont understand. exist problems in turbopack i think
 
       for (std::size_t i = 0; i < mBatchSize; i++) {
 	      lambda.emplace_back(mInputGatesPtrs[i]->GetDummyLambda());
       }
+
+      vec_ZZ_pE lambda_;
+      lambda_.SetLength(mBatchSize_m);
+      for(long i=0; i<mBatchSize_m; i++){
+        vector<long> temp;
+        for(long j=0; j<mBatchSize_l; j++){
+          temp[j] = conv<long>(lambda[j+i*mBatchSize_l]);
+        }
+        rmfe.set_input(temp);
+        rmfe.RMFE_GR_PHI();
+        vector<long> result = rmfe.get_result();
+        lambda_[i] = long2ZZpE(result);
+      }
       // Using deg = BatchSize-1 ensures there's no randomness involved
       //auto poly = scl::details::EvPolyFromSecretsAndDegree(lambda, mBatchSize-1, mPRG);
       //Vec shares = scl::details::SharesFromEvPoly(poly, mParties);
-      vec_ZZ_pE shares = Scheme_m1.create_shares(lambda);
+      vec_ZZ_pE shares = Scheme_m1.create_shares(lambda_);
 
       mPackedShrLambda = shares[mID];
     }
@@ -202,9 +218,12 @@ namespace dp {
     // ID of the party who owns this batch
     std::size_t mOwnerID;
 
-    std::size_t mBatchSize;
+    std::size_t mBatchSize; // mBatchSize = ml
+    std::size_t mBatchSize_m;
+    std::size_t mBatchSize_l;
 
-    packed_shamir::scheme Scheme_m1; //TODO:should init
+
+    packed_shamir::scheme Scheme_m1; 
     // The input gates that are part of this batch
     vec<std::shared_ptr<InputGate>> mInputGatesPtrs;
 
@@ -222,8 +241,9 @@ namespace dp {
   // Basically a collection of batches
   class InputLayer {
   public:
-    InputLayer(std::size_t owner_id, std::size_t batch_size) : mOwnerID(owner_id), mBatchSize(batch_size) {
-      auto first_batch = std::make_shared<InputBatch>(mOwnerID, mBatchSize);
+    InputLayer(std::size_t owner_id, std::size_t batch_size_l, std::size_t batch_size_m) : mOwnerID(owner_id), mBatchSize_l(batch_size_l),  mBatchSize_m(batch_size_m) {
+      mBatchSize = mBatchSize_l*mBatchSize_m;
+      auto first_batch = std::make_shared<InputBatch>(mOwnerID, mBatchSize_l, mBatchSize_m);
       // Append a first batch
       mBatches.emplace_back(first_batch);
     };
@@ -235,7 +255,7 @@ namespace dp {
       if ( current_batch->HasRoom() ) {
 	      current_batch->Append(input_gate);
       } else {
-	      auto new_batch = std::make_shared<InputBatch>(mOwnerID, mBatchSize);
+	      auto new_batch = std::make_shared<InputBatch>(mOwnerID, mBatchSize_l, mBatchSize_m);
 	      new_batch->Append(input_gate);
 	      mBatches.emplace_back(new_batch);
       }
@@ -285,6 +305,8 @@ namespace dp {
     std::size_t mOwnerID;
     vec<std::shared_ptr<InputBatch>> mBatches;
     std::size_t mBatchSize;
+    std::size_t mBatchSize_m;
+    std::size_t mBatchSize_l;
 
     // Network-related
     std::shared_ptr<scl::Network> mNetwork;

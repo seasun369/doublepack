@@ -13,7 +13,7 @@ namespace dp {
 
     // Individual share of the mask (lambda...lambda) associated to
     // the output of this gate.
-    FF GetShrLambda() { return mIndvShrLambdaC; };
+    Shr GetShrLambda() { return mIndvShrLambdaC; };
 
     // Intended to be called by P1
     virtual FF GetMu() = 0;
@@ -31,7 +31,7 @@ namespace dp {
     }
 
     // To get indv_shr lambda 
-    virtual FF GetIndvShrLambda() = 0; 
+    virtual Shr GetIndvShrLambda() = 0; 
 
     // Setting DN07 share
     //void SetDn07Share(FF share) {
@@ -59,12 +59,12 @@ namespace dp {
     bool mLearned = false;
 
     // Sharing of (lambda ... lambda)
-    FF mIndvShrLambdaC = FF(0);
+    Shr mIndvShrLambdaC = Shr(0);
     bool mIndvShrLambdaCSet = false;
 
     // DN07-related
-    FF mDn07Share;
-    bool mDn07Set = false;
+    //FF mDn07Share;
+    //bool mDn07Set = false;
 
     // mu = value - lambda
     // Learned by P1 in the online phase
@@ -114,7 +114,7 @@ namespace dp {
       return mClear;
     }
 
-    FF GetIndvShrLambda() {
+    Shr GetIndvShrLambda() {
       if ( !mIndvShrLambdaCSet ) {
 	      mIndvShrLambdaC = mLeft->GetIndvShrLambda() + mRight->GetIndvShrLambda();
 	      mIndvShrLambdaCSet = true;

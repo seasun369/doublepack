@@ -25,6 +25,7 @@ namespace dp {
   inline long positive_integer = 16; //k
   inline long gr_degree = 20;         //r should equal to r2
 
+
   inline gr gring(gr_prime, positive_integer, gr_degree);
   inline ZZ_pX f = gring.Fps_poly;
 
