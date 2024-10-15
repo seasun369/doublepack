@@ -60,6 +60,10 @@ namespace packed_shamir
 
 			scheme() {}
 
+			int get_m() const { return m; }
+			int get_n() const { return n; }
+			int get_d() const { return d; }
+
 			vec_ZZ_pE alpha_set;
 			vec_ZZ_pE beta_set;
 

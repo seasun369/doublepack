@@ -234,6 +234,23 @@ namespace dp {
     std::map<std::shared_ptr<InputBatch>, IOBatchFIPrep> mMapInputBatch;
     std::map<std::shared_ptr<OutputBatch>, IOBatchFIPrep> mMapOutputBatch;
 
+
+    size_t GetIndShrsSize() const { return mIndShrs.size(); }
+    
+    size_t GetUnpackedShrsASize() const { return mUnpackedShrsA.size(); }
+    size_t GetUnpackedShrsBSize() const { return mUnpackedShrsB.size(); }
+    
+    size_t GetUnpackedShrsABatchSize(size_t i) const { 
+        return i < mUnpackedShrsA.size() ? mUnpackedShrsA[i].size() : 0; 
+    }
+    
+    size_t GetUnpackedShrsBBatchSize(size_t i) const { 
+        return i < mUnpackedShrsB.size() ? mUnpackedShrsB[i].size() : 0; 
+    }
+    
+    size_t GetMultBatchFIPrepSize() const { return mMultBatchFIPrep.size(); }
+    size_t GetIOBatchFIPrepSize() const { return mIOBatchFIPrep.size(); }
+
   private:
     // Sizes
     std::size_t mNIndShrs;

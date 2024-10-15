@@ -49,6 +49,7 @@ set(TEST_SOURCE_FILES
     test/input_test.cc
     test/output_test.cc
     test/mult_test.cc
+    test/channel_specialized_test.cc  # Add this line
 )
 
 add_subdirectory( secure-computation-library )
@@ -81,3 +82,6 @@ target_link_libraries( ${TEST_EXECUTABLE} Catch2::Catch2 pthread scl ${NTL_LIBRA
 #    "${CMAKE_SOURCE_DIR}/PSS"
 #    "${CMAKE_SOURCE_DIR}/src")
 #  target_link_libraries(${FI} pthread scl ${NTL_LIBRARY} ${GMP_LIBRARY} ${M_LIBRARY})
+
+set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
