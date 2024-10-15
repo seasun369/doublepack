@@ -9,11 +9,11 @@ namespace dp {
     // 1 collect [lambda_alpha]_n-1
     Shr shr_lambdaA_p_R(0);
     for (std::size_t i = 0; i < mBatchSize; i++) {
-      shr_lambdaA_p_R += mSharesOfEi[i] * mMapIndShrs[input_batch->GetInputGate(i)];
+      shr_lambdaA_p_R += mSharesOfEij[i] * mMapIndShrs[input_batch->GetInputGate(i)];
     }
 
     // 2 add share of 0
-    shr_lambdaA_p_R += mMapInputBatch[input_batch].mShrO;
+    shr_lambdaA_p_R += mMapInputBatch[input_batch].mShrO;  //gain <lambda_alpha>n-1
 
     // 3 send to Owner
     mNetwork->Party(input_batch->GetOwner())->Send(shr_lambdaA_p_R);
@@ -22,9 +22,9 @@ namespace dp {
   void Correlator::PrepInputOwnerReceives(std::shared_ptr<InputBatch> input_batch) {
     if (mID == input_batch->GetOwner()) {
       Vec recv_shares;
-      vec_ZZ_pE recv_secret;
+      vec_ZZ_pE recv_secret_pE;
       recv_shares.reserve(mParties);
-      recv_secret.SetLength(mBatchSize);
+      recv_secret_pE.SetLength(mBatchSize);
 
       // Owner receives
       for (std::size_t i = 0; i < mParties; i++) {
@@ -33,7 +33,17 @@ namespace dp {
 	      recv_shares.emplace_back(buffer);
       }
       //recv_secret = scl::details::SecretsFromSharesAndLength(recv_shares, mBatchSize);
-      recv_secret = Scheme_n1.packed_reconstruct_shares(recv_shares); //TODO: should use rmfe
+      recv_secret_pE = Scheme_n1.packed_reconstruct_shares(recv_shares); //TODO: should use rmfe
+
+      vec<FF> recv_secret;
+      for(long i=0; i<mBatch_m; i++){
+        vector<long> e;
+        ZzpE2Veclong(recv_secret_pE[i],e,r2);
+        vector<long> res = rmfe.RMFE_GR_PSI(e);
+        for(long j=0; j<mBatch_l; j++){
+          recv_secret.emplace_back(conv<FF>(res[j]));
+        }
+      }
 
       // Assign lambdas
       for (std::size_t i = 0; i < mBatchSize; i++) {
@@ -49,7 +59,7 @@ namespace dp {
     // 1 collect [lambda_alpha]_n-1
     Shr shr_lambdaA_p_R(0);
     for (std::size_t i = 0; i < mBatchSize; i++) {
-      shr_lambdaA_p_R += mSharesOfEi[i] * mMapIndShrs[output_batch->GetOutputGate(i)];
+      shr_lambdaA_p_R += mSharesOfEij[i] * mMapIndShrs[output_batch->GetOutputGate(i)];
     }
 
     // 2 add share of 0
@@ -62,9 +72,9 @@ namespace dp {
   void Correlator::PrepOutputOwnerReceives(std::shared_ptr<OutputBatch> output_batch) {
     if (mID == output_batch->GetOwner()) {
       Vec recv_shares;
-      vec_ZZ_pE recv_secret;
+      vec_ZZ_pE recv_secret_pE;
       recv_shares.reserve(mParties);
-      recv_secret.SetLength(mBatchSize);
+      recv_secret_pE.SetLength(mBatchSize);
 
       // Owner receives
       for (std::size_t i = 0; i < mParties; i++) {
@@ -74,7 +84,17 @@ namespace dp {
       }
       // TODO watch out for degree
       //recv_secret = scl::details::SecretsFromSharesAndLength(recv_shares, mBatchSize);
-      recv_secret = Scheme_n1.packed_reconstruct_shares(recv_shares); //TODO: should use rmfe
+      recv_secret_pE = Scheme_n1.packed_reconstruct_shares(recv_shares); 
+
+      vec<FF> recv_secret;
+      for(long i=0; i<mBatch_m; i++){
+        vector<long> e;
+        ZzpE2Veclong(recv_secret_pE[i],e,r2);
+        vector<long> res = rmfe.RMFE_GR_PSI(e);
+        for(long j=0; j<mBatch_l; j++){
+          recv_secret.emplace_back(conv<FF>(res[j]));
+        }
+      }
 
       // Assign lambdas
       for (std::size_t i = 0; i < mBatchSize; i++) {
@@ -90,8 +110,8 @@ namespace dp {
     Shr shr_lambdaA_p_R(0);
     Shr shr_lambdaB_p_R(0);
     for (std::size_t i = 0; i < mBatchSize; i++) {
-      shr_lambdaA_p_R += mSharesOfEi[i] * mMapIndShrs[mult_batch->GetMultGate(i)->GetLeft()];
-      shr_lambdaB_p_R += mSharesOfEi[i] * mMapIndShrs[mult_batch->GetMultGate(i)->GetRight()];
+      shr_lambdaA_p_R += mSharesOfEij[i] * mMapIndShrs[mult_batch->GetMultGate(i)->GetLeft()];
+      shr_lambdaB_p_R += mSharesOfEij[i] * mMapIndShrs[mult_batch->GetMultGate(i)->GetRight()];
     }
 
     // 2 get random sharing [r]_n-1 and add [lambda_alpha]_n-1 + [r]_n-1
@@ -106,23 +126,29 @@ namespace dp {
   void Correlator::PrepMultP1ReceivesAndSends() {
     if (mID == 0) {
       Vec recv_shares_A;
-      Vec recv_secret_A;
+      vec_ZZ_pE recv_secret_A_pE;
       Vec recv_shares_B;
-      Vec recv_secret_B;
+      vec_ZZ_pE recv_secret_B_pE;
       recv_shares_A.reserve(mParties);
-      recv_secret_A.reserve(mBatchSize);
+      recv_secret_A_pE.SetLength(mBatchSize);
       recv_shares_B.reserve(mParties);
-      recv_secret_B.reserve(mBatchSize);
+      recv_secret_B_pE.SetLength(mBatchSize);
 
       // P1 receives
       for (std::size_t i = 0; i < mParties; i++) {
-	      FF buffer;
+	      Shr buffer;
 	      mNetwork->Party(i)->Recv(buffer);
 	      recv_shares_A.emplace_back(buffer);
 	      mNetwork->Party(i)->Recv(buffer);
 	      recv_shares_B.emplace_back(buffer);
       }
-      //TODO:
+
+      recv_secret_A_pE = Scheme_n1.packed_reconstruct_shares(recv_shares_A);
+      recv_secret_B_pE = Scheme_n1.packed_reconstruct_shares(recv_shares_B);
+
+      vec_ZZ_pE new_shares_A = Scheme_m1.create_shares(recv_secret_A_pE);
+      vec_ZZ_pE new_shares_B = Scheme_m1.create_shares(recv_secret_B_pE);
+      
       //recv_secret_A = scl::details::SecretsFromSharesAndLength(recv_shares_A, mBatchSize);
       //recv_secret_B = scl::details::SecretsFromSharesAndLength(recv_shares_B, mBatchSize);
 

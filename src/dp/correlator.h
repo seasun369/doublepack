@@ -55,9 +55,9 @@ namespace dp {
   public:
     Correlator() {};
 
-    Correlator(std::size_t n_ind_shares, std::size_t n_mult_batches, std::size_t n_inout_batches, std::size_t batch_size, std::size_t batch_size_l, std::size_t batch_size_m, scheme scheme_nm, scheme scheme_n1, scheme scheme_t) :
+    Correlator(std::size_t n_ind_shares, std::size_t n_mult_batches, std::size_t n_inout_batches, std::size_t batch_size, std::size_t batch_size_l, std::size_t batch_size_m, scheme scheme_nm, scheme scheme_n1, scheme scheme_t, scheme scheme_m1) :
       mNIndShrs(n_ind_shares), mNMultBatches(n_mult_batches), mNInOutBatches(n_inout_batches), \
-      mCTRIndShrs(0), mCTRMultBatches(0), mCTRInOutBatches(0), mBatchSize(batch_size),mBatch_l(batch_size_l),mBatch_m(batch_size_m),Scheme_nm(scheme_nm),Scheme_n1(scheme_n1),Scheme_t(scheme_t) {
+      mCTRIndShrs(0), mCTRMultBatches(0), mCTRInOutBatches(0), mBatchSize(batch_size),mBatch_l(batch_size_l),mBatch_m(batch_size_m),Scheme_nm(scheme_nm),Scheme_n1(scheme_n1),Scheme_t(scheme_t), Scheme_m1(scheme_m1) {
 
       mIndShrs.reserve(mNIndShrs);
       mMultBatchFIPrep.reserve(mNMultBatches);
@@ -243,7 +243,7 @@ namespace dp {
     //packed scheme
     packed_shamir::scheme Scheme_nm;
     packed_shamir::scheme Scheme_n1;
-    //packed_shamir::scheme Scheme_m1;
+    packed_shamir::scheme Scheme_m1;
     packed_shamir::scheme Scheme_t;
 
     // Counters

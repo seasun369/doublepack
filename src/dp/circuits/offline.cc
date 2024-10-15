@@ -17,11 +17,24 @@ namespace dp {
     // Now update packed sharings
     for (auto input_layer : mInputLayers) {
       for (auto input_batch : input_layer.mBatches) {
+        vec<FF> lambda_A_FF;
 	      Vec lambda_A;
 	      lambda_A.reserve(mBatch_m);
-	      for (std::size_t i = 0; i < mBatch_m; i++) {
-	        lambda_A.emplace_back(input_batch->GetInputGate(i)->GetDummyLambda());
+        lambda_A_FF.reserve(mBatchSize);
+	      for (std::size_t i = 0; i < mBatchSize; i++) {
+	        lambda_A_FF.emplace_back(input_batch->GetInputGate(i)->GetDummyLambda());
 	      }
+
+        for(std::size_t i=0; i<mBatch_m; i++){
+          vector<long> temp;
+          for(std::size_t j=0; j<mBatch_l; j++){
+            temp[j] = conv<long>(lambda_A_FF[j+i*mBatch_l]);
+          }
+          rmfe.set_input(temp);
+          rmfe.RMFE_GR_PHI();
+          vector<long> result = rmfe.get_result();
+          lambda_A[i] = long2ZZpE(result);
+        }
 	      //scl::PRG prg;
 	      //auto poly = scl::details::EvPolyFromSecretsAndDegree(lambda_A, mBatchSize-1, prg);
 	      //Vec new_shares = scl::details::SharesFromEvPoly(poly, mParties);
@@ -33,39 +46,92 @@ namespace dp {
     }
     for (auto output_layer : mOutputLayers) {
       for (auto output_batch : output_layer.mBatches) {
-	      Vec lambda_A;
-	      lambda_A.reserve(mBatch_m);
-	      for (std::size_t i = 0; i < mBatch_m; i++) {
-	        lambda_A.emplace_back(output_batch->GetOutputGate(i)->GetDummyLambda());
-	      }
+	      //Vec lambda_A;
+	      //lambda_A.reserve(mBatch_m);
+	      //for (std::size_t i = 0; i < mBatch_m; i++) {
+	      //  lambda_A.emplace_back(output_batch->GetOutputGate(i)->GetDummyLambda());
+	      //}
 	      //scl::PRG prg;
 	      //auto poly = scl::details::EvPolyFromSecretsAndDegree(lambda_A, mBatchSize-1, prg);
 	      //Vec new_shares = scl::details::SharesFromEvPoly(poly, mParties);
+        //vec_ZZ_pE new_shares = Scheme_m1.create_shares(lambda_A);
+
+        vec<FF> lambda_A_FF;
+	      Vec lambda_A;
+	      lambda_A.reserve(mBatch_m);
+        lambda_A_FF.reserve(mBatchSize);
+	      for (std::size_t i = 0; i < mBatchSize; i++) {
+	        lambda_A_FF.emplace_back(output_batch->GetOutputGate(i)->GetDummyLambda());
+	      }
+
+        for(std::size_t i=0; i<mBatch_m; i++){
+          vector<long> temp;
+          for(std::size_t j=0; j<mBatch_l; j++){
+            temp[j] = conv<long>(lambda_A_FF[j+i*mBatch_l]);
+          }
+          rmfe.set_input(temp);
+          rmfe.RMFE_GR_PHI();
+          vector<long> result = rmfe.get_result();
+          lambda_A[i] = long2ZZpE(result);
+        }
+
         vec_ZZ_pE new_shares = Scheme_m1.create_shares(lambda_A);
+
 	      output_batch->SetPreprocessing(new_shares[mID]);
       }
     }
     // Mults
     for (auto mult_layer : mMultLayers) {
       for (auto mult_batch : mult_layer.mBatches) {
-	      Vec lambda_A;
-	      Vec lambda_B;
-	      Vec lambda_C;
-	      lambda_A.reserve(mBatch_m);
-	      lambda_B.reserve(mBatch_m);
-	      lambda_C.reserve(mBatch_m);
-	      for (std::size_t i = 0; i < mBatch_m; i++) {
+	      vec<FF> lambda_A;
+	      vec<FF> lambda_B;
+	      vec<FF> lambda_C;
+	      lambda_A.reserve(mBatchSize);
+	      lambda_B.reserve(mBatchSize);
+	      lambda_C.reserve(mBatchSize);
+	      for (std::size_t i = 0; i < mBatchSize; i++) {
 	        lambda_A.emplace_back(mult_batch->GetMultGate(i)->GetLeft()->GetDummyLambda());
 	        lambda_B.emplace_back(mult_batch->GetMultGate(i)->GetRight()->GetDummyLambda());
 	        lambda_C.emplace_back(mult_batch->GetMultGate(i)->GetDummyLambda());
 	      }
+
+        Vec lambda_A_;
+        Vec lambda_B_;
+        Vec lambda_C_;
+	      lambda_A_.reserve(mBatch_m);
+        lambda_B_.reserve(mBatch_m);
+        lambda_C_.reserve(mBatch_m);
+
+        for(std::size_t i=0; i<mBatch_m; i++){
+          vector<long> temp1;
+          vector<long> temp2;
+          vector<long> temp3;
+          for(std::size_t j=0; j<mBatch_l; j++){
+            temp1[j] = conv<long>(lambda_A[j+i*mBatch_l]);
+            temp2[j] = conv<long>(lambda_B[j+i*mBatch_l]);
+            temp3[j] = conv<long>(lambda_C[j+i*mBatch_l]);
+          }
+          rmfe.set_input(temp1);
+          rmfe.RMFE_GR_PHI();
+          vector<long> result1 = rmfe.get_result();
+          lambda_A_[i] = long2ZZpE(result1);
+          rmfe.set_input(temp2);
+          rmfe.RMFE_GR_PHI();
+          vector<long> result2 = rmfe.get_result();
+          lambda_B_[i] = long2ZZpE(result2);
+          rmfe.set_input(temp3);
+          rmfe.RMFE_GR_PHI();
+          vector<long> result3 = rmfe.get_result();
+          lambda_C_[i] = long2ZZpE(result3);
+        }
+
 	      //scl::PRG prg;
 	      //auto poly_A = scl::details::EvPolyFromSecretsAndDegree(lambda_A, mBatchSize-1, prg);
 	      //auto poly_B = scl::details::EvPolyFromSecretsAndDegree(lambda_B, mBatchSize-1, prg);
 	      //auto poly_C = scl::details::EvPolyFromSecretsAndDegree(lambda_C, mBatchSize-1, prg);
-	      vec_ZZ_pE new_shares_A = Scheme_m1.create_shares(lambda_A);
-	      vec_ZZ_pE new_shares_B = Scheme_m1.create_shares(lambda_B);
-	      vec_ZZ_pE new_shares_C = Scheme_m1.create_shares(lambda_C);
+	      vec_ZZ_pE new_shares_A = Scheme_m1.create_shares(lambda_A_);
+	      vec_ZZ_pE new_shares_B = Scheme_m1.create_shares(lambda_B_);
+	      vec_ZZ_pE new_shares_C = Scheme_m1.create_shares(lambda_C_);
 
 	      mult_batch->SetPreprocessing(new_shares_A[mID], new_shares_B[mID], \
 				     new_shares_A[mID] * new_shares_B[mID] - new_shares_C[mID]);
@@ -124,7 +190,7 @@ namespace dp {
       std::size_t n_mult_batches = GetNMultBatches();
       std::size_t n_inout_batches = GetNInputBatches() + GetNOutputBatches();
 
-      mCorrelator = Correlator(n_ind_shares, n_mult_batches, n_inout_batches, mBatchSize, mBatch_l, mBatch_m, Scheme_nm,Scheme_n1,Scheme_t);
+      mCorrelator = Correlator(n_ind_shares, n_mult_batches, n_inout_batches, mBatchSize, mBatch_l, mBatch_m, Scheme_nm,Scheme_n1,Scheme_t,Scheme_m1);
       mCorrelator.SetNetwork(mNetwork, mID);
       mCorrelator.PrecomputeEij();
     }

@@ -1,12 +1,12 @@
 #include "dp/circuits.h"
 
 namespace dp {
-  void Circuit::Init(std::size_t n_clients, std::size_t batch_size) {
+  void Circuit::Init(std::size_t n_clients, std::size_t batch_size_l, std::size_t batch_size_m) {
     // Initialize input layer
     mInputLayers.reserve(n_clients);
     mFlatInputGates.resize(n_clients);
     for (std::size_t i = 0; i < n_clients; i++) {
-      auto input_layer = InputLayer(i, batch_size);
+      auto input_layer = InputLayer(i, batch_size_l, batch_size_m);
       mInputLayers.emplace_back(input_layer);
     }
       
@@ -14,12 +14,12 @@ namespace dp {
     mOutputLayers.reserve(n_clients);
     mFlatOutputGates.resize(n_clients);
     for (std::size_t i = 0; i < n_clients; i++) {
-      auto output_layer = OutputLayer(i, batch_size);
+      auto output_layer = OutputLayer(i, batch_size_l, batch_size_m);
       mOutputLayers.emplace_back(output_layer);
     }
 
     // Initialize first mult layer
-    auto first_layer = MultLayer(mBatchSize);
+    auto first_layer = MultLayer(mBatch_l, mBatch_m);
     mMultLayers.emplace_back(first_layer);
     mFlatMultLayers.emplace_back(VecMultGates());
 
@@ -59,7 +59,7 @@ namespace dp {
     // Pad the batches if necessary
     mMultLayers.back().Close();
     // Open space for the next layer
-    auto next_layer = MultLayer(mBatchSize);
+    auto next_layer = MultLayer(mBatch_l, mBatch_m);
     mMultLayers.emplace_back(next_layer);
   }
 
@@ -71,4 +71,4 @@ namespace dp {
     mMultLayers.back().Close();
   }
 
-} // namespace tp
+} // namespace dp

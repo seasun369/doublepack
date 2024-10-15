@@ -34,22 +34,22 @@ namespace dp {
       return mLambda;
     };
 
-    void SetIndvShrLambda(FF indv_shr) {
+    void SetIndvShrLambda(Shr indv_shr) {
       mIndvShrLambdaC = indv_shr;
       mIndvShrLambdaCSet = true;
     }
 
-    FF GetIndvShrLambda() {
+    Shr GetIndvShrLambda() {
       if ( !mIndvShrLambdaCSet )
 	      throw std::invalid_argument("IndvShrLambda is not set in this multiplication gate");
       return mIndvShrLambdaC;
     }
 
-    FF GetDn07Share() {
-      if ( !mDn07Set )
-	      throw std::invalid_argument("Dn07 shares is not set in this multiplication gate");
-      return mDn07Share;
-    }
+    //FF GetDn07Share() {
+    //  if ( !mDn07Set )
+	  //    throw std::invalid_argument("Dn07 shares is not set in this multiplication gate");
+    //  return mDn07Share;
+    //}
 
     FF GetClear() {
       if ( !mEvaluated ) {
@@ -82,8 +82,10 @@ namespace dp {
     
   class MultBatch {
   public:
-    MultBatch(std::size_t batch_size) : mBatchSize(batch_size) {
+    MultBatch(std::size_t batch_size_l, std::size_t batch_size_m) : mBatchSize_l(batch_size_l), mBatchSize_m(batch_size_m) {
+      mBatchSize = mBatchSize_l*mBatchSize_m;
       mMultGatesPtrs.reserve(mBatchSize);
+      Scheme_m1 = packed_shamir::scheme(mParties, mBatchSize_m, mBatchSize_m-1,gring);
     };
 
     // Adds a new mult_gate to the batch. It cannot add more gates than
@@ -98,22 +100,25 @@ namespace dp {
     void _DummyPrep(FF lambda_A, FF lambda_B, FF lambda_C) {
       if ( mMultGatesPtrs.size() != mBatchSize )
 	      throw std::invalid_argument("The number of mult gates does not match the batch size");
+      Shr lambda_A_ = conv<Shr>(lambda_A);
+      Shr lambda_B_ = conv<Shr>(lambda_B);
+      Shr lambda_C_ = conv<Shr>(lambda_C);
 
-      mPackedShrLambdaA = lambda_A;
-      mPackedShrLambdaB = lambda_B;
-      mPackedShrDeltaC = lambda_A * lambda_B - lambda_C;
+      mPackedShrLambdaA = lambda_A_;
+      mPackedShrLambdaB = lambda_B_;
+      mPackedShrDeltaC = lambda_A_ * lambda_B_ - lambda_C_;
     };
 
     void _DummyPrep() {
       _DummyPrep(FF(0), FF(0), FF(0));
     };
     
-    //TODO: different from turbopack in online_mult phase
+    //TODO: dont use beaver triple, implement semi_honest version first
     // Generates the preprocessing from the lambdas of the inputs
     void PrepFromDummyLambdas() {
-      Vec lambda_A;
-      Vec lambda_B;
-      Vec delta_C;
+      vector<FF> lambda_A;
+      vector<FF> lambda_B;
+      vector<FF> delta_C;
 
       for (std::size_t i = 0; i < mBatchSize; i++) {
 	      auto l_A = mMultGatesPtrs[i]->GetLeft()->GetDummyLambda();
@@ -125,21 +130,52 @@ namespace dp {
 	      lambda_B.emplace_back(l_B);
 	      delta_C.emplace_back(d_C);
       }
+
+      vec_ZZ_pE lambda_A_pE;
+      vec_ZZ_pE lambda_B_pE;
+      vec_ZZ_pE delta_C_pE;
+      lambda_A_pE.SetLength(mBatchSize_m);
+      lambda_B_pE.SetLength(mBatchSize_m);
+      delta_C_pE.SetLength(mBatchSize_m);
+      for(long i=0; i<mBatchSize_m; i++){
+        vector<long> temp1;
+        vector<long> temp2;
+        vector<long> temp3;
+        for(long j=0; j<mBatchSize_l; j++){
+          temp1[j] = conv<long>(lambda_A[j+i*mBatchSize_l]);
+          temp2[j] = conv<long>(lambda_B[j+i*mBatchSize_l]);
+          temp3[j] = conv<long>(delta_C[j+i*mBatchSize_l]);
+        }
+        rmfe.set_input(temp1);
+        rmfe.RMFE_GR_PHI();
+        vector<long> result1 = rmfe.get_result();
+        lambda_A_pE[i] = long2ZZpE(result1);
+
+        rmfe.set_input(temp2);
+        rmfe.RMFE_GR_PHI();
+        vector<long> result2 = rmfe.get_result();
+        lambda_B_pE[i] = long2ZZpE(result2);
+
+        rmfe.set_input(temp3);
+        rmfe.RMFE_GR_PHI();
+        vector<long> result3 = rmfe.get_result();
+        delta_C_pE[i] = long2ZZpE(result3);
+      }
       
       // Using deg = BatchSize-1 ensures there's no randomness involved
       //auto poly_A = scl::details::EvPolyFromSecretsAndDegree(lambda_A, mBatchSize-1, mPRG);
       //mPackedShrLambdaA = poly_A.Evaluate(FF(mID));
-      vec_ZZ_pE shares_A = Scheme_m1.create_shares(lambda_A);
+      vec_ZZ_pE shares_A = Scheme_m1.create_shares(lambda_A_pE);
       mPackedShrLambdaA = shares_A[mID];
 	
       //auto poly_B = scl::details::EvPolyFromSecretsAndDegree(lambda_B, mBatchSize-1, mPRG);
       //mPackedShrLambdaB = poly_B.Evaluate(FF(mID));
-      vec_ZZ_pE shares_B = Scheme_m1.create_shares(lambda_B);
+      vec_ZZ_pE shares_B = Scheme_m1.create_shares(lambda_B_pE);
       mPackedShrLambdaA = shares_B[mID];
 
       //auto poly_C = scl::details::EvPolyFromSecretsAndDegree(delta_C, mBatchSize-1, mPRG);
       //mPackedShrDeltaC = poly_C.Evaluate(FF(mID));
-      vec_ZZ_pE shares_C = Scheme_m1.create_shares(delta_C);
+      vec_ZZ_pE shares_C = Scheme_m1.create_shares(delta_C_pE);
       mPackedShrDeltaC = shares_C[mID];
     }
 
@@ -197,8 +233,10 @@ namespace dp {
 
   private:
     std::size_t mBatchSize;
+    std::size_t mBatchSize_l;
+    std::size_t mBatchSize_m;
 
-    packed_shamir::scheme Scheme_m1;//TODO: should init
+    packed_shamir::scheme Scheme_m1;
 
     // The mult gates that are part of this batch
     vec<std::shared_ptr<MultGate>> mMultGatesPtrs;
@@ -222,8 +260,9 @@ namespace dp {
   // Basically a collection of batches
   class MultLayer {
   public:
-    MultLayer(std::size_t batch_size) : mBatchSize(batch_size) {
-      auto first_batch = std::make_shared<MultBatch>(mBatchSize);
+    MultLayer(std::size_t batch_size_l, std::size_t batch_size_m) : mBatchSize_l(batch_size_l),  mBatchSize_m(batch_size_m){
+      mBatchSize = mBatchSize_l*mBatchSize_m;
+      auto first_batch = std::make_shared<MultBatch>(mBatchSize_l, mBatchSize_m);
       // Append a first batch
       mBatches.emplace_back(first_batch);
     };
@@ -235,7 +274,7 @@ namespace dp {
       if ( current_batch->HasRoom() ) {
 	      current_batch->Append(mult_gate);
       } else {
-	      auto new_batch = std::make_shared<MultBatch>(mBatchSize);
+	      auto new_batch = std::make_shared<MultBatch>(mBatchSize_l, mBatchSize_m);
 	      new_batch->Append(mult_gate);
 	      mBatches.emplace_back(new_batch);
       }
@@ -298,6 +337,8 @@ namespace dp {
   private:
     vec<std::shared_ptr<MultBatch>> mBatches;
     std::size_t mBatchSize;
+    std::size_t mBatchSize_l;
+    std::size_t mBatchSize_m;
 
     // Network-related
     std::shared_ptr<scl::Network> mNetwork;

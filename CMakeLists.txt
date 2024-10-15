@@ -25,18 +25,18 @@ set(DP_SOURCE_FILES
     RMFE/utils.cpp
     RMFE/Inverse.cpp
 
-    #src/dp/gate.cc
-    #src/dp/mult_gate.cc
-    #src/dp/input_gate.cc
-    #src/dp/output_gate.cc
+    src/dp/gate.cc
+    src/dp/mult_gate.cc
+    src/dp/input_gate.cc
+    src/dp/output_gate.cc
   
-    #src/dp/circuits/building.cc
-    #src/dp/circuits/cleartext.cc
-    #src/dp/circuits/generic.cc
-    #src/dp/circuits/online.cc
-    #src/dp/circuits/offline.cc  
+    src/dp/circuits/building.cc
+    src/dp/circuits/cleartext.cc
+    src/dp/circuits/generic.cc
+    src/dp/circuits/online.cc
+    src/dp/circuits/offline.cc  
   
-    #src/dp/correlator.cc  
+    src/dp/correlator.cc  
     src/dp/fi_prep.cc  
 )
 
@@ -46,6 +46,9 @@ set(TEST_SOURCE_FILES
     test/GRmult_test.cc
     test/RMFE_test.cc
     test/fi_prep_test.cc
+    test/input_test.cc
+    test/output_test.cc
+    test/mult_test.cc
 )
 
 add_subdirectory( secure-computation-library )

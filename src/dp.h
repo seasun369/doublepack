@@ -29,7 +29,6 @@ namespace dp {
   inline gr gring(gr_prime, positive_integer, gr_degree);
   inline ZZ_pX f = gring.Fps_poly;
 
-  // need to redefine
   using FF = ZZ_p;
   using Shr = ZZ_pE;
   using Poly = scl::details::EvPolynomial<FF>;

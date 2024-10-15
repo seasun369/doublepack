@@ -14,14 +14,14 @@ namespace dp {
   void Circuit::InputOwnerSendsP1() {
     for (std::size_t i = 0; i < mClients; i++) {
       for (auto input_gate : mFlatInputGates[i]) {
-	input_gate->OwnerSendsP1();
+	      input_gate->OwnerSendsP1();
       }
     }
   }
   void Circuit::InputP1Receives() {
     for (std::size_t i = 0; i < mClients; i++) { // outer loop can be removed if needed for opt.
       for (auto input_gate : mFlatInputGates[i]) {
-	input_gate->P1Receives();
+	      input_gate->P1Receives();
       }
     }
   }
@@ -47,14 +47,14 @@ namespace dp {
   void Circuit::OutputP1SendsMu() {
     for (std::size_t i = 0; i < mClients; i++) {
       for (auto output_gate : mFlatOutputGates[i]) {
-	output_gate->P1SendsMu();
+	      output_gate->P1SendsMu();
       }
     }
   }
   void Circuit::OutputOwnerReceivesMu() {
     for (std::size_t i = 0; i < mClients; i++) { // outer loop can be removed if needed for opt.
       for (auto output_gate : mFlatOutputGates[i]) {
-	output_gate->OwnerReceivesMu();
+	      output_gate->OwnerReceivesMu();
       }
     }
   }

@@ -7,7 +7,7 @@ namespace dp {
 
     for (std::size_t i = 0; i < mClients; i++) {
       if ( inputs_per_client[i].size() != mFlatInputGates[i].size() )
-	throw std::invalid_argument("Number of inputs provided for a client does not match its number of input gates");
+	      throw std::invalid_argument("Number of inputs provided for a client does not match its number of input gates");
 
       for (std::size_t j = 0; j < inputs_per_client[i].size(); j++) mFlatInputGates[i][j]->ClearInput(inputs_per_client[i][j]);
     }
@@ -17,8 +17,8 @@ namespace dp {
     std::size_t idx(0);
     for (std::size_t i = 0; i < mClients; i++) {
       for (auto input_gate : mFlatInputGates[i]) {
-	input_gate->ClearInput(inputs[idx]);
-	idx++;
+	      input_gate->ClearInput(inputs[idx]);
+	      idx++;
       }
     }
   }

@@ -47,12 +47,12 @@ namespace dp {
     }
 
 
-    FF GetIndvShrLambda() {
+    Shr GetIndvShrLambda() {
       if ( !mIndvShrLambdaCSet ) {
 	      mIndvShrLambdaC = mLeft->GetIndvShrLambda();
 	      mIndvShrLambdaCSet = true;
       }
-      return mLambda;
+      return mIndvShrLambdaC; //why lambda
     }    
 
 //    FF GetDn07Share() {
@@ -134,8 +134,10 @@ namespace dp {
 
   class OutputBatch {
   public:
-    OutputBatch(std::size_t owner_id, std::size_t batch_size) : mOwnerID(owner_id), mBatchSize(batch_size) {
+    OutputBatch(std::size_t owner_id, std::size_t batch_size_l, std::size_t batch_size_m) : mOwnerID(owner_id), mBatchSize_l(batch_size_l), mBatchSize_m(batch_size_m) {
+      mBatchSize = mBatchSize_l*mBatchSize_m;
       mOutputGatesPtrs.reserve(mBatchSize);
+      Scheme_m1 = packed_shamir::scheme(mParties, mBatchSize_m, mBatchSize_m-1,gring);
     };
 
     // Adds a new output_gate to the batch. It cannot add more gates than
@@ -153,7 +155,9 @@ namespace dp {
       if ( mOutputGatesPtrs.size() != mBatchSize )
 	      throw std::invalid_argument("The number of output gates does not match the batch size");
 
-      mPackedShrLambda = lambda;
+      //mPackedShrLambda = lambda;
+      Shr lambda_ = conv<Shr>(lambda);
+      mPackedShrLambda = lambda_;
       for (auto input_gate : mOutputGatesPtrs) input_gate->_DummyPrep(lambda);
     }
     void _DummyPrep() {
@@ -167,15 +171,28 @@ namespace dp {
 
     // Generates the preprocessing from the lambdas of the inputs
     void PrepFromDummyLambdas() {
-      Vec lambda;
+      vector<FF> lambda;
 
       for (std::size_t i = 0; i < mBatchSize; i++) {
 	      lambda.emplace_back(mOutputGatesPtrs[i]->GetDummyLambda());
       }
+
+      vec_ZZ_pE lambda_;
+      lambda_.SetLength(mBatchSize_m);
+      for(long i=0; i<mBatchSize_m; i++){
+        vector<long> temp;
+        for(long j=0; j<mBatchSize_l; j++){
+          temp[j] = conv<long>(lambda[j+i*mBatchSize_l]);
+        }
+        rmfe.set_input(temp);
+        rmfe.RMFE_GR_PHI();
+        vector<long> result = rmfe.get_result();
+        lambda_[i] = long2ZZpE(result);
+      }
       // Using deg = BatchSize-1 ensures there's no randomness involved
       //auto poly = scl::details::EvPolyFromSecretsAndDegree(lambda, mBatchSize-1, mPRG);
       //Vec shares = scl::details::SharesFromEvPoly(poly, mParties);
-      vec_ZZ_pE shares = Scheme_m1.create_shares(lambda);
+      vec_ZZ_pE shares = Scheme_m1.create_shares(lambda_);
 
       mPackedShrLambda = shares[mID];	
     }
@@ -211,11 +228,13 @@ namespace dp {
     std::size_t mOwnerID;
 
     std::size_t mBatchSize;
+    std::size_t mBatchSize_l;
+    std::size_t mBatchSize_m;
 
     // The output gates that are part of this batch
     vec<std::shared_ptr<OutputGate>> mOutputGatesPtrs;
 
-    packed_shamir::scheme Scheme_m1;//TODO: should init
+    packed_shamir::scheme Scheme_m1;
 
     // The packed sharings associated to this batch
     Shr mPackedShrLambda;
@@ -231,8 +250,9 @@ namespace dp {
   // Basically a collection of batches
   class OutputLayer {
   public:
-    OutputLayer(std::size_t owner_id, std::size_t batch_size) : mOwnerID(owner_id), mBatchSize(batch_size) {
-      auto first_batch = std::make_shared<OutputBatch>(mOwnerID, mBatchSize);
+    OutputLayer(std::size_t owner_id, std::size_t batch_size_l, std::size_t batch_size_m) : mOwnerID(owner_id), mBatchSize_l(batch_size_l),  mBatchSize_m(batch_size_m) {
+      mBatchSize = mBatchSize_l*mBatchSize_m;
+      auto first_batch = std::make_shared<OutputBatch>(mOwnerID, mBatchSize_l, mBatchSize_m);
       // Append a first batch
       mBatches.emplace_back(first_batch);
     };
@@ -242,11 +262,11 @@ namespace dp {
     void Append(std::shared_ptr<OutputGate> output_gate) {
       auto current_batch = mBatches.back(); // accessing last elt
       if ( current_batch->HasRoom() ) {
-	current_batch->Append(output_gate);
+	      current_batch->Append(output_gate);
       } else {
-	auto new_batch = std::make_shared<OutputBatch>(mOwnerID, mBatchSize);
-	new_batch->Append(output_gate);
-	mBatches.emplace_back(new_batch);
+	      auto new_batch = std::make_shared<OutputBatch>(mOwnerID, mBatchSize_l, mBatchSize_m);
+	      new_batch->Append(output_gate);
+	      mBatches.emplace_back(new_batch);
       }
     }
 
@@ -260,7 +280,7 @@ namespace dp {
 
       auto last_batch = mBatches.back(); // accessing last elt
       while ( last_batch->HasRoom() ) {
-	last_batch->Append(padding_gate);
+	      last_batch->Append(padding_gate);
       } 
       // assert(last_batch->HasRoom() == false); // PASSES
     }
@@ -295,6 +315,8 @@ namespace dp {
     std::size_t mOwnerID;
     vec<std::shared_ptr<OutputBatch>> mBatches;
     std::size_t mBatchSize;
+    std::size_t mBatchSize_l;
+    std::size_t mBatchSize_m;
 
     // Network-related
     std::shared_ptr<scl::Network> mNetwork;

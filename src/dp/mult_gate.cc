@@ -6,14 +6,41 @@ namespace dp {
 
       // 1. P1 assembles mu_A and mu_B
 
-      Vec mu_alpha;
-      Vec mu_beta;
+      vec<FF> mu_alpha_FF;
+      vec<FF> mu_beta_FF;
       // Here is where the permutation happens!
       for (auto gate : mMultGatesPtrs) {
-	      mu_alpha.emplace_back(gate->GetLeft()->GetMu());
-	      mu_beta.emplace_back(gate->GetRight()->GetMu());
+	      mu_alpha_FF.emplace_back(gate->GetLeft()->GetMu());
+	      mu_beta_FF.emplace_back(gate->GetRight()->GetMu());
+      }
+
+      vec_ZZ_pE mu_alpha;
+      mu_alpha.SetLength(mBatchSize_m);
+      for(long i=0; i<mBatchSize_m; i++){
+        vector<long> temp;
+        for(long j=0; j<mBatchSize_l; j++){
+          temp[j] = conv<long>(mu_alpha_FF[j+i*mBatchSize_l]);
+        }
+        rmfe.set_input(temp);
+        rmfe.RMFE_GR_PHI();
+        vector<long> result = rmfe.get_result();
+        mu_alpha[i] = long2ZZpE(result);
+      }
+
+      vec_ZZ_pE mu_beta;
+      mu_beta.SetLength(mBatchSize_m);
+      for(long i=0; i<mBatchSize_m; i++){
+        vector<long> temp;
+        for(long j=0; j<mBatchSize_l; j++){
+          temp[j] = conv<long>(mu_beta_FF[j+i*mBatchSize_l]);
+        }
+        rmfe.set_input(temp);
+        rmfe.RMFE_GR_PHI();
+        vector<long> result = rmfe.get_result();
+        mu_beta[i] = long2ZZpE(result);
       }
       
+
       // 2. P1 generates shares of mu_A and mu_B
       
       //auto poly_A = scl::details::EvPolyFromSecretsAndDegree(mu_alpha, mBatchSize-1, mPRG);
@@ -58,21 +85,31 @@ namespace dp {
     if (mID == 0) {
 	    vec_ZZ_pE mu_gamma;
       Vec shares;
-	      for (std::size_t i = 0; i < mParties; ++i) {
+	    for (std::size_t i = 0; i < mParties; ++i) {
         FF shr_mu_C;
         mNetwork->Party(i)->Recv(shr_mu_C);
         shares.emplace_back(shr_mu_C);
       }
 	    //mu_gamma = scl::details::SecretsFromSharesAndLength(shares, mBatchSize);
-      mu_gamma = Scheme_m1.packed_reconstruct_shares(shares); //TODO: use rmfe: psi^prime
+      mu_gamma = Scheme_m1.packed_reconstruct_shares(shares);
+      
+      vec<FF> mu_gamma_FF;
+      for(long i=0; i<mBatchSize_m; i++){
+        vector<long> e;
+        ZzpE2Veclong(mu_gamma[i],e,r2);
+        vector<long> res = rmfe.RMFE_GR_PSI(e);
+        for(long j=0; j<mBatchSize_l; j++){
+          mu_gamma_FF.emplace_back(conv<FF>(res[j]));
+        }
+      }
 
 	  // P1 updates the mu for the gates in the current batch
 	      for (std::size_t i = 0; i < mBatchSize; i++) {
-	        mMultGatesPtrs[i]->mMu = mu_gamma[i];
+	        mMultGatesPtrs[i]->mMu = mu_gamma_FF[i];
 	        mMultGatesPtrs[i]->mLearned = true;
 	      }
       }
     }
     
-} // namespace tp
+} // namespace dp
   

@@ -42,17 +42,17 @@ namespace dp {
   class Circuit {
   public:
     // Initialize input, output and first mult layer
-    // TODO:
-    void Init(std::size_t n_clients, std::size_t batch_size);
+    
+    void Init(std::size_t n_clients, std::size_t batch_size_l, std::size_t batch_size_m);
 
 
     Circuit(std::size_t n_clients, std::size_t batch_size, std::size_t l_size, std::size_t m_size) : mBatchSize(batch_size), mClients(n_clients), mBatch_l(l_size), mBatch_m(m_size) {
-      Init(n_clients, batch_size);
+      Init(n_clients, l_size, m_size);
       init_scheme();
     }
 
     Circuit() : mBatchSize(1), mClients(1), mBatch_l(1), mBatch_m(1) {
-      Init(mClients, mBatchSize);
+      Init(mClients, mBatch_l, mBatch_m);
       init_scheme();
     }
 
